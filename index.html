@@ -1292,7 +1292,8 @@
                     </button>
                 </div>
                 
-                <button class="btn-submit" onclick="genererRappor()" style="margin-top: 15px;">
+                <!-- CORRECTION ICI : genererRappor() → genererRapport() -->
+                <button class="btn-submit" onclick="genererRapport()" style="margin-top: 15px;">
                     <i class="bi bi-search"></i> Appliquer les filtres
                 </button>
             </div>
@@ -2678,6 +2679,7 @@
         
         document.getElementById('validerPaiementBtn').onclick = validerPaiement;
         
+        // CORRECTION : La fonction s'appelle bien genererRapport (avec un 't' à la fin)
         async function genererRapport() {
             const anneeId = document.getElementById('rapportAnneeSelect').value;
             const promotionId = document.getElementById('rapportPromotionSelect').value;
@@ -2794,7 +2796,7 @@
         // Variables pour stocker les informations du duplicata en cours
 let duplicataEnCours = null;
 
-// Fonction principale de demande de duplicata (remplace l'ancienne)
+// Fonction principale de demande de duplicata
 window.genererDuplicata = async function(id) {
     try {
         const doc = await db.collection('transactions').doc(id).get();
@@ -2982,7 +2984,7 @@ async function confirmerDuplicata() {
 }
 window.confirmerDuplicata = confirmerDuplicata;
 
-// Fermer les overlays en cliquant à l'extérieur (optionnel)
+// Fermer les overlays en cliquant à l'extérieur
 document.addEventListener('click', function(e) {
     if (e.target.id === 'duplicataConfirmOverlay' || e.target.id === 'duplicataValidationOverlay') {
         annulerDuplicata();
