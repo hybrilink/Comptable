@@ -1292,8 +1292,7 @@
                     </button>
                 </div>
                 
-                <!-- CORRECTION ICI : genererRappor() → genererRapport() -->
-                <button class="btn-submit" onclick="genererRapport()" style="margin-top: 15px;">
+                <button class="btn-submit" id="btnAppliquerFiltres" style="margin-top: 15px;">
                     <i class="bi bi-search"></i> Appliquer les filtres
                 </button>
             </div>
@@ -2679,8 +2678,8 @@
         
         document.getElementById('validerPaiementBtn').onclick = validerPaiement;
         
-        // CORRECTION : La fonction s'appelle bien genererRapport (avec un 't' à la fin)
         async function genererRapport() {
+            console.log('Fonction genererRapport appelée');
             const anneeId = document.getElementById('rapportAnneeSelect').value;
             const promotionId = document.getElementById('rapportPromotionSelect').value;
             const dateDebut = document.getElementById('dateDebut').value;
@@ -2738,7 +2737,6 @@
             const tbody = document.getElementById('rapportTableBody');
             tbody.innerHTML = filteredTransactionsForRapport.map(t => {
                 const dateStr = t.date ? new Date(t.date.toDate()).toLocaleDateString('fr-FR') : '-';
-                // Pour les duplicatas, le montant affiché est seulement les frais de duplicata
                 const montantTotal = t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0);
                 const fichesNoms = t.fiches?.map(f => f.nom).join(', ') || '-';
                 const fichesDetailHtml = t.fiches?.map(f => {
@@ -2875,25 +2873,6 @@ function confirmerPremiereEtape() {
 }
 window.confirmerPremiereEtape = confirmerPremiereEtape;
 
-// Gestionnaire d'événement pour le champ de validation
-document.addEventListener('DOMContentLoaded', function() {
-    const validationInput = document.getElementById('duplicataValidationInput');
-    if (validationInput) {
-        validationInput.addEventListener('input', function() {
-            // Masquer le message d'erreur quand l'utilisateur tape
-            document.getElementById('duplicataError').classList.remove('show');
-            this.classList.remove('error');
-        });
-        
-        // Permettre la validation avec la touche Entrée
-        validationInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                confirmerDuplicata();
-            }
-        });
-    }
-});
-
 // Fonction finale pour confirmer et exécuter le duplicata
 async function confirmerDuplicata() {
     const inputValue = document.getElementById('duplicataValidationInput').value.trim();
@@ -2984,27 +2963,10 @@ async function confirmerDuplicata() {
 }
 window.confirmerDuplicata = confirmerDuplicata;
 
-// Fermer les overlays en cliquant à l'extérieur
-document.addEventListener('click', function(e) {
-    if (e.target.id === 'duplicataConfirmOverlay' || e.target.id === 'duplicataValidationOverlay') {
-        annulerDuplicata();
-    }
-});
-
-// Empêcher la propagation des clics à l'intérieur des boîtes de dialogue
-document.querySelectorAll('.confirmation-dialog').forEach(dialog => {
-    dialog.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-});
         function clearRapportSearch() {
             document.getElementById('rapportSearchEtudiant').value = '';
             filterRapportBySearch('');
         }
-        
-        document.getElementById('rapportSearchEtudiant').addEventListener('input', function() {
-            filterRapportBySearch(this.value);
-        });
         
         function exporterExcel() {
             if (!allTransactionsForRapport.length) { showToast('Aucune donnée', 'warning'); return; }
@@ -3079,13 +3041,6 @@ document.querySelectorAll('.confirmation-dialog').forEach(dialog => {
             showToast('Rapport imprimé avec succès', 'success');
         }
         
-        // Filtres dépenses
-        document.getElementById('filtrerDepensesBtn')?.addEventListener('click', () => {
-            const dateDebut = document.getElementById('depenseDateDebut').value;
-            const dateFin = document.getElementById('depenseDateFin').value;
-            chargerDepenses(dateDebut, dateFin);
-        });
-        
         // Profile
         document.getElementById('profileBtn').onclick = () => {
             document.getElementById('profilNom').textContent = utilisateurActuel.nomComplet;
@@ -3115,6 +3070,73 @@ document.querySelectorAll('.confirmation-dialog').forEach(dialog => {
             document.getElementById('confirmNewPassword').value = '';
         };
         
+        // ==================== INITIALISATION DES ÉVÉNEMENTS ====================
+        
+        // Initialisation quand le DOM est prêt
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM chargé - Initialisation des événements');
+            
+            // Bouton Appliquer les filtres
+            const btnAppliquerFiltres = document.getElementById('btnAppliquerFiltres');
+            if (btnAppliquerFiltres) {
+                console.log('Bouton Appliquer les filtres trouvé');
+                btnAppliquerFiltres.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('Clic sur Appliquer les filtres');
+                    genererRapport();
+                });
+            } else {
+                console.error('Bouton Appliquer les filtres NON trouvé');
+            }
+            
+            // Bouton Filtrer dépenses
+            const btnFiltrerDepenses = document.getElementById('filtrerDepensesBtn');
+            if (btnFiltrerDepenses) {
+                btnFiltrerDepenses.addEventListener('click', function() {
+                    const dateDebut = document.getElementById('depenseDateDebut').value;
+                    const dateFin = document.getElementById('depenseDateFin').value;
+                    chargerDepenses(dateDebut, dateFin);
+                });
+            }
+            
+            // Validation duplicata avec touche Entrée
+            const validationInput = document.getElementById('duplicataValidationInput');
+            if (validationInput) {
+                validationInput.addEventListener('input', function() {
+                    document.getElementById('duplicataError').classList.remove('show');
+                    this.classList.remove('error');
+                });
+                
+                validationInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        confirmerDuplicata();
+                    }
+                });
+            }
+            
+            // Fermer les overlays en cliquant à l'extérieur
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'duplicataConfirmOverlay' || e.target.id === 'duplicataValidationOverlay') {
+                    annulerDuplicata();
+                }
+            });
+            
+            // Empêcher la propagation des clics à l'intérieur des boîtes de dialogue
+            document.querySelectorAll('.confirmation-dialog').forEach(dialog => {
+                dialog.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+            
+            // Recherche dans le rapport
+            const rapportSearchInput = document.getElementById('rapportSearchEtudiant');
+            if (rapportSearchInput) {
+                rapportSearchInput.addEventListener('input', function() {
+                    filterRapportBySearch(this.value);
+                });
+            }
+        });
+        
         // Exposer les fonctions globalement
         window.openPage = openPage;
         window.closePage = closePage;
@@ -3127,6 +3149,9 @@ document.querySelectorAll('.confirmation-dialog').forEach(dialog => {
         window.reimprimer = reimprimer;
         window.reimprimerDepense = reimprimerDepense;
         window.validerDepense = validerDepense;
+        window.annulerDuplicata = annulerDuplicata;
+        window.confirmerPremiereEtape = confirmerPremiereEtape;
+        window.confirmerDuplicata = confirmerDuplicata;
         
         // Initialisation
         mettreAJourStatsHeader();
