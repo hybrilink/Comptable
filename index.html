@@ -111,169 +111,244 @@
             justify-content: center;
             gap: 10px;
         }
-/* Styles pour la boîte de dialogue de confirmation */
-.confirmation-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3000;
-    animation: fadeIn 0.3s ease-out;
-}
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+        /* Styles pour la conversion de devise */
+        .currency-selector {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            padding: 5px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
 
-.confirmation-dialog {
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 450px;
-    width: 90%;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    text-align: center;
-}
+        .currency-selector select {
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px;
+            outline: none;
+        }
 
-.confirmation-dialog .dialog-icon {
-    font-size: 50px;
-    margin-bottom: 15px;
-}
+        .currency-selector select option {
+            background: var(--primary-blue);
+            color: white;
+        }
 
-.confirmation-dialog .dialog-icon.warning {
-    color: #ffc107;
-}
+        .currency-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
 
-.confirmation-dialog .dialog-icon.info {
-    color: #003366;
-}
+        .dual-price {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
 
-.confirmation-dialog h4 {
-    color: #003366;
-    margin-bottom: 15px;
-    font-size: 18px;
-}
+        .price-fc {
+            font-weight: bold;
+            color: #003366;
+        }
 
-.confirmation-dialog p {
-    color: #666;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
+        .price-usd {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+        }
 
-.confirmation-dialog .transaction-info {
-    background: #f0f7ff;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 20px;
-    text-align: left;
-    font-size: 13px;
-    border-left: 4px solid #003366;
-}
+        .price-usd-inverted {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
 
-.confirmation-dialog .transaction-info .info-row {
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: space-between;
-}
+        .amount-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.confirmation-dialog .transaction-info .info-label {
-    color: #666;
-    font-weight: normal;
-}
+        .amount-primary {
+            font-weight: bold;
+            font-size: 28px;
+        }
 
-.confirmation-dialog .transaction-info .info-value {
-    color: #003366;
-    font-weight: bold;
-}
+        .amount-secondary {
+            font-size: 16px;
+            opacity: 0.7;
+        }
 
-.confirmation-dialog .dialog-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
-}
+        /* Styles pour la boîte de dialogue de confirmation */
+        .confirmation-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease-out;
+        }
 
-.confirmation-dialog .btn-confirm {
-    background: linear-gradient(135deg, #ffc107, #ff9800);
-    color: #333;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    flex: 1;
-}
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-.confirmation-dialog .btn-confirm:hover {
-    background: linear-gradient(135deg, #ff9800, #f57c00);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
-}
+        .confirmation-dialog {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
 
-.confirmation-dialog .btn-cancel {
-    background: #6c757d;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    flex: 1;
-}
+        .confirmation-dialog .dialog-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
 
-.confirmation-dialog .btn-cancel:hover {
-    background: #5a6268;
-    transform: translateY(-2px);
-}
+        .confirmation-dialog .dialog-icon.warning {
+            color: #ffc107;
+        }
 
-.confirmation-dialog .validation-input {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #003366;
-    border-radius: 10px;
-    font-size: 16px;
-    text-align: center;
-    margin: 15px 0;
-    transition: all 0.3s;
-}
+        .confirmation-dialog .dialog-icon.info {
+            color: #003366;
+        }
 
-.confirmation-dialog .validation-input:focus {
-    outline: none;
-    border-color: #ffb347;
-    box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.2);
-}
+        .confirmation-dialog h4 {
+            color: #003366;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
 
-.confirmation-dialog .validation-input.error {
-    border-color: #dc3545;
-    animation: shake 0.5s;
-}
+        .confirmation-dialog p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
-}
+        .confirmation-dialog .transaction-info {
+            background: #f0f7ff;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 13px;
+            border-left: 4px solid #003366;
+        }
 
-.confirmation-dialog .error-message {
-    color: #dc3545;
-    font-size: 13px;
-    margin-top: 5px;
-    display: none;
-}
+        .confirmation-dialog .transaction-info .info-row {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
 
-.confirmation-dialog .error-message.show {
-    display: block;
-}
+        .confirmation-dialog .transaction-info .info-label {
+            color: #666;
+            font-weight: normal;
+        }
 
-        
+        .confirmation-dialog .transaction-info .info-value {
+            color: #003366;
+            font-weight: bold;
+        }
+
+        .confirmation-dialog .dialog-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .confirmation-dialog .btn-confirm {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: #333;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .confirmation-dialog .btn-confirm:hover {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        .confirmation-dialog .btn-cancel {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .confirmation-dialog .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .confirmation-dialog .validation-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #003366;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .confirmation-dialog .validation-input:focus {
+            outline: none;
+            border-color: #ffb347;
+            box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.2);
+        }
+
+        .confirmation-dialog .validation-input.error {
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .confirmation-dialog .error-message {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .confirmation-dialog .error-message.show {
+            display: block;
+        }
+
         .btn-paiement {
             background: linear-gradient(135deg, #28a745, #1e7e34);
             color: white;
@@ -945,7 +1020,6 @@
             transform: translateY(-1px);
         }
         
-        /* Styles pour les dépenses */
         .depense-form {
             background: #f8f9fa;
             border-radius: 15px;
@@ -1098,6 +1172,38 @@
             font-weight: bold;
             margin-left: 5px;
         }
+
+        .conversion-info {
+            background: #e8f4fd;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 10px 0;
+            font-size: 12px;
+            color: #003366;
+            border: 1px dashed #003366;
+        }
+
+        .conversion-rate {
+            font-weight: bold;
+            color: #ff9800;
+        }
+
+        .dual-amount {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dual-amount .primary {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .dual-amount .secondary {
+            font-size: 14px;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body>
@@ -1105,6 +1211,17 @@
         <div class="container">
             <a class="navbar-brand text-white" href="#"><i class="bi bi-calculator-fill"></i> Faculté Agronomique - Comptabilité</a>
             <div class="navbar-right">
+                <!-- Sélecteur de devise -->
+                <div class="currency-selector">
+                    <i class="bi bi-currency-exchange" style="color: white;"></i>
+                    <select id="currencySelect" onchange="changerDevise()">
+                        <option value="FC">Francs Congolais (FC)</option>
+                        <option value="USD">Dollars US ($)</option>
+                      
+                    </select>
+                    <span class="currency-badge" id="rateBadge">1$ = 23 000 FC</span>
+                </div>
+                
                 <div class="today-stats-bar">
                     <i class="bi bi-calendar-day"></i> Aujourd'hui:
                     <span class="entrees"><i class="bi bi-arrow-up-circle-fill"></i> <span id="todayEntreesHeader">0 FC</span></span>
@@ -1214,6 +1331,7 @@
                     <div class="total-section">
                         <span>Montant total :</span>
                         <div class="total-amount" id="totalAmount">0 Fc</div>
+                        <div id="totalAmountUSD" style="font-size: 16px; color: #666; margin-top: 5px;"></div>
                     </div>
                     
                     <button class="btn-submit" id="validerPaiementBtn">
@@ -1292,7 +1410,7 @@
                     </button>
                 </div>
                 
-                <button class="btn-submit" id="btnAppliquerFiltres" style="margin-top: 15px;">
+                <button class="btn-submit" onclick="genererRapport()" style="margin-top: 15px;">
                     <i class="bi bi-search"></i> Appliquer les filtres
                 </button>
             </div>
@@ -1457,63 +1575,60 @@
         </div>
     </div>
 
-<!-- Boîte de dialogue de confirmation Duplicata -->
-<div id="duplicataConfirmOverlay" class="confirmation-overlay" style="display: none;">
-    <div class="confirmation-dialog">
-        <div class="dialog-icon warning">
-            <i class="bi bi-exclamation-triangle-fill"></i>
-        </div>
-        <h4>Confirmation - Génération de Duplicata</h4>
-        <p>Êtes-vous sûr de vouloir générer un duplicata pour ce ticket ?</p>
-        <div class="transaction-info" id="duplicataTransactionInfo">
-            <!-- Rempli dynamiquement -->
-        </div>
-        <p class="text-muted" style="font-size: 12px;">
-            <i class="bi bi-info-circle"></i> 
-            Des frais de <strong>10 000 FC par fiche</strong> seront appliqués pour le duplicata.
-        </p>
-        <div class="dialog-buttons">
-            <button class="btn-cancel" onclick="annulerDuplicata()">
-                <i class="bi bi-x-circle"></i> Annuler
-            </button>
-            <button class="btn-confirm" id="btnConfirmDuplicata" onclick="confirmerPremiereEtape()">
-                <i class="bi bi-check-circle"></i> Oui, continuer
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Boîte de dialogue de validation Duplicata -->
-<div id="duplicataValidationOverlay" class="confirmation-overlay" style="display: none;">
-    <div class="confirmation-dialog">
-        <div class="dialog-icon info">
-            <i class="bi bi-shield-lock-fill"></i>
-        </div>
-        <h4>Validation finale - Duplicata</h4>
-        <p>Pour confirmer la génération du duplicata, veuillez entrer le chiffre <strong>1</strong> ci-dessous :</p>
-        <input 
-            type="text" 
-            id="duplicataValidationInput" 
-            class="validation-input" 
-            placeholder="Entrez le chiffre 1" 
-            maxlength="1"
-            autocomplete="off"
-        >
-        <p class="error-message" id="duplicataError">
-            <i class="bi bi-exclamation-circle"></i> Veuillez entrer le chiffre 1 pour valider
-        </p>
-        <div class="dialog-buttons">
-            <button class="btn-cancel" onclick="annulerDuplicata()">
-                <i class="bi bi-x-circle"></i> Annuler
-            </button>
-            <button class="btn-confirm" id="btnFinaliserDuplicata" onclick="confirmerDuplicata()">
-                <i class="bi bi-check-circle"></i> Valider et imprimer
-            </button>
+    <!-- Boîte de dialogue de confirmation Duplicata -->
+    <div id="duplicataConfirmOverlay" class="confirmation-overlay" style="display: none;">
+        <div class="confirmation-dialog">
+            <div class="dialog-icon warning">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <h4>Confirmation - Génération de Duplicata</h4>
+            <p>Êtes-vous sûr de vouloir générer un duplicata pour ce ticket ?</p>
+            <div class="transaction-info" id="duplicataTransactionInfo">
+            </div>
+            <p class="text-muted" style="font-size: 12px;">
+                <i class="bi bi-info-circle"></i> 
+                Des frais de <strong>10 000 FC par fiche</strong> seront appliqués pour le duplicata.
+            </p>
+            <div class="dialog-buttons">
+                <button class="btn-cancel" onclick="annulerDuplicata()">
+                    <i class="bi bi-x-circle"></i> Annuler
+                </button>
+                <button class="btn-confirm" id="btnConfirmDuplicata" onclick="confirmerPremiereEtape()">
+                    <i class="bi bi-check-circle"></i> Oui, continuer
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
-
+    <!-- Boîte de dialogue de validation Duplicata -->
+    <div id="duplicataValidationOverlay" class="confirmation-overlay" style="display: none;">
+        <div class="confirmation-dialog">
+            <div class="dialog-icon info">
+                <i class="bi bi-shield-lock-fill"></i>
+            </div>
+            <h4>Validation finale - Duplicata</h4>
+            <p>Pour confirmer la génération du duplicata, veuillez entrer le chiffre <strong>1</strong> ci-dessous :</p>
+            <input 
+                type="text" 
+                id="duplicataValidationInput" 
+                class="validation-input" 
+                placeholder="Entrez le chiffre 1" 
+                maxlength="1"
+                autocomplete="off"
+            >
+            <p class="error-message" id="duplicataError">
+                <i class="bi bi-exclamation-circle"></i> Veuillez entrer le chiffre 1 pour valider
+            </p>
+            <div class="dialog-buttons">
+                <button class="btn-cancel" onclick="annulerDuplicata()">
+                    <i class="bi bi-x-circle"></i> Annuler
+                </button>
+                <button class="btn-confirm" id="btnFinaliserDuplicata" onclick="confirmerDuplicata()">
+                    <i class="bi bi-check-circle"></i> Valider et imprimer
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -1536,7 +1651,102 @@
             .then(() => console.log('Persistance active'))
             .catch((err) => console.warn('Erreur persistance:', err));
         
-        // Variables globales
+        // ==================== CONVERSION DE DEVISE ====================
+        const TAUX_CONVERSION = 2300; // 1$ = 23 000 FC
+        let deviseActuelle = 'FC'; // 'FC', 'USD', ou 'HYBRID'
+        
+        // Charger la devise sauvegardée
+        const deviseSauvegardee = localStorage.getItem('deviseComptabilite');
+        if (deviseSauvegardee) {
+            deviseActuelle = deviseSauvegardee;
+        }
+        
+        function changerDevise() {
+            const select = document.getElementById('currencySelect');
+            deviseActuelle = select.value;
+            localStorage.setItem('deviseComptabilite', deviseActuelle);
+            
+            // Mettre à jour l'affichage du badge
+            const rateBadge = document.getElementById('rateBadge');
+            if (deviseActuelle === 'USD') {
+                rateBadge.textContent = '1 FC = 0.00043 $';
+            } else {
+                rateBadge.textContent = '1$ = 23 00 FC';
+            }
+            
+            // Rafraîchir tous les affichages
+            mettreAJourTousLesAffichages();
+            showToast(`Devise changée : ${deviseActuelle === 'FC' ? 'Francs Congolais' : deviseActuelle === 'USD' ? 'Dollars US' : 'Hybride (FC + $)'}`, 'success');
+        }
+        
+        function convertirFCversUSD(montantFC) {
+            return montantFC / TAUX_CONVERSION;
+        }
+        
+        function convertirUSDversFC(montantUSD) {
+            return montantUSD * TAUX_CONVERSION;
+        }
+        
+        function formaterMontant(montantFC, forceFormat = null) {
+            const format = forceFormat || deviseActuelle;
+            
+            switch(format) {
+                case 'USD':
+                    const usd = convertirFCversUSD(montantFC);
+                    return `$ ${usd.toFixed(2)}`;
+                case 'HYBRID':
+                    const usdHybrid = convertirFCversUSD(montantFC);
+                    return `${montantFC.toLocaleString()} FC ($ ${usdHybrid.toFixed(2)})`;
+                case 'FC':
+                default:
+                    return `${montantFC.toLocaleString()} FC`;
+            }
+        }
+        
+        function formaterMontantDual(montantFC) {
+            const usd = convertirFCversUSD(montantFC);
+            return {
+                fc: `${montantFC.toLocaleString()} FC`,
+                usd: `$ ${usd.toFixed(2)}`,
+                hybride: `${montantFC.toLocaleString()} FC ($ ${usd.toFixed(2)})`
+            };
+        }
+        
+        function mettreAJourTousLesAffichages() {
+            // Mettre à jour le total du panier
+            updateTotal();
+            
+            // Mettre à jour les stats du header
+            mettreAJourStatsHeader();
+            
+            // Mettre à jour le solde
+            calculerSolde();
+            
+            // Mettre à jour le rapport si affiché
+            if (document.getElementById('pageRapport').classList.contains('active')) {
+                genererRapport();
+            }
+            
+            // Mettre à jour les dépenses si affichées
+            if (document.getElementById('pageDepense').classList.contains('active')) {
+                chargerDepenses();
+            }
+            
+            // Mettre à jour le select
+            document.getElementById('currencySelect').value = deviseActuelle;
+        }
+        
+        // Initialiser le select au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('currencySelect').value = deviseActuelle;
+            if (deviseActuelle === 'USD') {
+                document.getElementById('rateBadge').textContent = '1 FC = 0.00043 $';
+            }
+        });
+        
+        window.changerDevise = changerDevise;
+        
+        // ==================== VARIABLES GLOBALES ====================
         let currentStudent = null;
         let selectedFiches = [];
         let allStudents = [];
@@ -1551,6 +1761,7 @@
         let allDepenses = [];
         let totalEntrees = 0;
         let totalSorties = 0;
+        let duplicataEnCours = null;
         
         const utilisateurActuel = JSON.parse(localStorage.getItem('utilisateurCompta') || 'null');
         if (!utilisateurActuel || utilisateurActuel.role !== 'comptabilite') {
@@ -1591,7 +1802,6 @@
             commands.push(0x0A);
         }
 
-        // Fonction modifiée pour le duplicata : affiche les montants originaux mais ne les comptabilise pas
         function generateESCPOS(transaction, fiches, total, annee, promoNom, montantLettres, numeroRecu, isDuplicata = false, fraisDuplicata = 0) {
             const date = new Date().toLocaleDateString('fr-FR');
             const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
@@ -1664,7 +1874,6 @@
                 let ficheNom = (fiche.nom || 'FICHE').substring(0, 32);
                 let fichePrix = (fiche.prix || 0).toLocaleString();
                 if (isDuplicata) {
-                    // Pour duplicata, on affiche le montant original mais on précise qu'il est déjà payé
                     commands.push(...textToBytes(formatLine(`  ${ficheNom}`, `${fichePrix} FC (paye)`, WIDTH)));
                     commands.push(0x0A);
                     commands.push(...textToBytes(formatLine(`  Frais duplicata`, `10 000 FC`, WIDTH)));
@@ -1716,7 +1925,6 @@
             const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             const WIDTH = 48;
             
-            // Calculer les statistiques par fiche : Nombre d'étudiants et Montant total
             const fichesStats = {};
             transactions.forEach(t => {
                 if (t.fiches && Array.isArray(t.fiches)) {
@@ -1762,7 +1970,6 @@
             commands.push(0x0A);
             addSeparator(commands, '-', WIDTH);
             
-            // --- SECTION MODIFIÉE : AFFICHER SEULEMENT LE DÉTAIL PAR FICHE ---
             if (Object.keys(fichesStats).length > 0) {
                 addSeparator(commands, '=', WIDTH);
                 commands.push(0x1B, 0x21, 0x08);
@@ -1770,7 +1977,6 @@
                 commands.push(0x0A);
                 commands.push(0x1B, 0x21, 0x00);
                 addSeparator(commands, '-', WIDTH);
-                // En-tête du tableau
                 commands.push(...textToBytes(formatLine('FICHE', 'NB ETUD.   MONTANT', WIDTH)));
                 commands.push(0x0A);
                 addSeparator(commands, '-', WIDTH);
@@ -1782,7 +1988,6 @@
                     commands.push(0x0A);
                 }
             }
-            // --- FIN DE LA SECTION MODIFIÉE ---
             
             addSeparator(commands, '=', WIDTH);
             commands.push(0x1B, 0x61, 0x01);
@@ -1957,7 +2162,6 @@
             const date = new Date().toLocaleDateString('fr-FR');
             const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             
-            // Calculer les statistiques par fiche : Nombre d'étudiants et Montant total
             const fichesStats = {};
             transactions.forEach(t => {
                 if (t.fiches && Array.isArray(t.fiches)) {
@@ -1987,7 +2191,6 @@
             ticket += `NB ETUDIANTS : ${stats.totalEtudiants}\n`;
             ticket += '----------------------------------------\n';
             
-            // Section modifiée : Afficher seulement le détail par fiche
             if (Object.keys(fichesStats).length > 0) {
                 ticket += '========================================\n';
                 ticket += '        DETAIL PAR FICHE\n';
@@ -2101,7 +2304,6 @@
                 transactionsSnapshot.forEach(doc => {
                     const data = doc.data();
                     totalEntrees += data.montantTotal || 0;
-                    // Pour les duplicatas, on ajoute seulement les frais de duplicata
                     if (data.duplicataFrais) totalEntrees += data.duplicataFrais;
                 });
                 
@@ -2120,9 +2322,9 @@
                 const totalEntreesEl = document.getElementById('totalEntrees');
                 const totalSortiesEl = document.getElementById('totalSorties');
                 
-                if (soldeMontantEl) soldeMontantEl.innerHTML = solde.toLocaleString() + ' FC';
-                if (totalEntreesEl) totalEntreesEl.innerHTML = totalEntrees.toLocaleString() + ' FC';
-                if (totalSortiesEl) totalSortiesEl.innerHTML = totalSorties.toLocaleString() + ' FC';
+                if (soldeMontantEl) soldeMontantEl.innerHTML = formaterMontant(solde);
+                if (totalEntreesEl) totalEntreesEl.innerHTML = formaterMontant(totalEntrees);
+                if (totalSortiesEl) totalSortiesEl.innerHTML = formaterMontant(totalSorties);
                 
                 return solde;
             } catch (e) {
@@ -2162,9 +2364,9 @@
                 
                 const soldeJour = totalEntreesJour - totalSortiesJour;
                 
-                document.getElementById('todayEntreesHeader').innerHTML = totalEntreesJour.toLocaleString() + ' FC';
-                document.getElementById('todaySortiesHeader').innerHTML = totalSortiesJour.toLocaleString() + ' FC';
-                document.getElementById('todaySoldeHeader').innerHTML = soldeJour.toLocaleString() + ' FC';
+                document.getElementById('todayEntreesHeader').innerHTML = formaterMontant(totalEntreesJour);
+                document.getElementById('todaySortiesHeader').innerHTML = formaterMontant(totalSortiesJour);
+                document.getElementById('todaySoldeHeader').innerHTML = formaterMontant(soldeJour);
                 
             } catch(e) { 
                 console.error('Erreur stats header:', e);
@@ -2209,7 +2411,7 @@
                     html += `
                         <div class="depense-item">
                             <div class="depense-header">
-                                <span class="depense-montant"><i class="bi bi-cash-stack"></i> ${(d.montant || 0).toLocaleString()} FC</span>
+                                <span class="depense-montant"><i class="bi bi-cash-stack"></i> ${formaterMontant(d.montant || 0)}</span>
                                 <span class="depense-date"><i class="bi bi-calendar3"></i> ${date}</span>
                                 <button class="btn-print-depense" onclick="reimprimerDepense('${d.id}')" title="Réimprimer le ticket"><i class="bi bi-printer-fill"></i> Imprimer</button>
                             </div>
@@ -2471,6 +2673,7 @@
             document.getElementById('fichesList').innerHTML = '';
             document.getElementById('panierItems').innerHTML = '';
             document.getElementById('totalAmount').innerHTML = '0 Fc';
+            document.getElementById('totalAmountUSD').innerHTML = '';
             const btn = document.getElementById('validerPaiementBtn');
             btn.disabled = false;
             btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Valider le paiement';
@@ -2558,7 +2761,18 @@
                     if (filtered.length > 0) {
                         fichesListDiv.innerHTML = filtered.map(fiche => {
                             const isSelected = selectedFiches.some(f => f.id === fiche.id);
-                            return `<div class="fiche-item ${isSelected ? 'selected' : ''}" onclick="toggleFiche('${fiche.id}', ${fiche.montant || 0}, '${escapeHtml(fiche.nom)}')"><div><strong>${escapeHtml(fiche.nom)}</strong><br><small>${escapeHtml(fiche.description || '')}</small></div><div><span class="fiche-price">${(fiche.montant || 0).toLocaleString()} Fc</span></div></div>`;
+                            const montantFC = fiche.montant || 0;
+                            const dual = formaterMontantDual(montantFC);
+                            return `<div class="fiche-item ${isSelected ? 'selected' : ''}" onclick="toggleFiche('${fiche.id}', ${montantFC}, '${escapeHtml(fiche.nom)}')">
+                                <div>
+                                    <strong>${escapeHtml(fiche.nom)}</strong><br>
+                                    <small>${escapeHtml(fiche.description || '')}</small>
+                                </div>
+                                <div>
+                                    <span class="fiche-price">${dual.fc}</span>
+                                    <div style="font-size: 11px; color: ${isSelected ? '#ffb347' : '#999'};">${dual.usd}</div>
+                                </div>
+                            </div>`;
                         }).join('');
                     } else {
                         fichesListDiv.innerHTML = '<div class="no-results">Aucune fiche trouvée</div>';
@@ -2592,15 +2806,18 @@
             }
             panierSection.style.display = 'block';
             panierCount.textContent = selectedFiches.length;
-            panierItems.innerHTML = selectedFiches.map(fiche => `
+            panierItems.innerHTML = selectedFiches.map(fiche => {
+                const dual = formaterMontantDual(fiche.prix);
+                return `
                 <div class="panier-item">
                     <div class="panier-item-name"><i class="bi bi-file-text"></i><span>${escapeHtml(fiche.nom || 'Fiche')}</span></div>
                     <div>
-                        <span style="font-weight: bold; margin-right: 15px;">${fiche.prix.toLocaleString()} Fc</span>
+                        <span style="font-weight: bold; margin-right: 15px;">${dual.fc}</span>
+                        <span style="font-size: 12px; color: #999; margin-right: 10px;">${dual.usd}</span>
                         <button class="btn-remove-panier" onclick="retirerDuPanier('${fiche.id}')"><i class="bi bi-x-circle"></i></button>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
         
         window.retirerDuPanier = function(ficheId) {
@@ -2615,7 +2832,20 @@
         
         function updateTotal() { 
             const total = selectedFiches.reduce((sum, f) => sum + (parseFloat(f.prix) || 0), 0);
-            document.getElementById('totalAmount').innerHTML = `${total.toLocaleString()} Fc`;
+            const dual = formaterMontantDual(total);
+            
+            document.getElementById('totalAmount').innerHTML = dual.fc;
+            
+            const usdEl = document.getElementById('totalAmountUSD');
+            if (usdEl) {
+                if (deviseActuelle === 'HYBRID' || deviseActuelle === 'USD') {
+                    usdEl.innerHTML = `(${dual.usd})`;
+                    usdEl.style.display = 'block';
+                } else {
+                    usdEl.innerHTML = '';
+                    usdEl.style.display = 'none';
+                }
+            }
         }
         
         function genererNumeroRecu() {
@@ -2666,7 +2896,8 @@
                 showToast('Paiement enregistré!', 'success');
                 imprimerAF250(transaction, fichesDetails, total, anneeNom, promoNom, montantLettres, numeroRecu, false, 0).catch(e => console.warn("Impression:", e));
                 mettreAJourStatsHeader();
-                document.getElementById('successDetails').innerHTML = `<strong>Étudiant:</strong> ${escapeHtml(currentStudent.nomComplet)}<br><strong>Montant:</strong> ${total.toLocaleString()} Fc<br><strong>N° Reçu:</strong> ${numeroRecu}`;
+                const dual = formaterMontantDual(total);
+                document.getElementById('successDetails').innerHTML = `<strong>Étudiant:</strong> ${escapeHtml(currentStudent.nomComplet)}<br><strong>Montant:</strong> ${dual.hybride}<br><strong>N° Reçu:</strong> ${numeroRecu}`;
                 document.getElementById('paiementFormulaire').style.display = 'none';
                 document.getElementById('paiementSuccessMessage').style.display = 'block';
             } catch (error) { 
@@ -2679,7 +2910,6 @@
         document.getElementById('validerPaiementBtn').onclick = validerPaiement;
         
         async function genererRapport() {
-            console.log('Fonction genererRapport appelée');
             const anneeId = document.getElementById('rapportAnneeSelect').value;
             const promotionId = document.getElementById('rapportPromotionSelect').value;
             const dateDebut = document.getElementById('dateDebut').value;
@@ -2716,7 +2946,7 @@
                 }
                 return sum + (t.montantTotal || 0);
             }, 0);
-            document.getElementById('totalMontant').innerHTML = `${totalMontant.toLocaleString()} Fc`;
+            document.getElementById('totalMontant').innerHTML = formaterMontant(totalMontant);
             document.getElementById('totalTransactions').innerHTML = transactions.length;
             document.getElementById('totalEtudiants').innerHTML = new Set(transactions.map(t => t.etudiantId)).size;
             filterRapportBySearch('');
@@ -2741,9 +2971,9 @@
                 const fichesNoms = t.fiches?.map(f => f.nom).join(', ') || '-';
                 const fichesDetailHtml = t.fiches?.map(f => {
                     if (t.isDuplicata) {
-                        return `<span class="fiche-detail-badge">${escapeHtml(f.nom || 'Fiche')} : ${(f.prix || 0).toLocaleString()} FC (payé) + 10 000 FC frais</span>`;
+                        return `<span class="fiche-detail-badge">${escapeHtml(f.nom || 'Fiche')} : ${formaterMontant(f.prix || 0)} (payé) + 10 000 FC frais</span>`;
                     }
-                    return `<span class="fiche-detail-badge">${escapeHtml(f.nom || 'Fiche')} : ${(f.prix || 0).toLocaleString()} FC</span>`;
+                    return `<span class="fiche-detail-badge">${escapeHtml(f.nom || 'Fiche')} : ${formaterMontant(f.prix || 0)}</span>`;
                 }).join('<br>') || '-';
                 const canReimprimer = peutReimprimer(t);
                 const actionButton = canReimprimer 
@@ -2762,7 +2992,7 @@
                     <td>${escapeHtml(t.anneeAcademiqueNom || '-')}</td>
                     <td>${t.fiches?.length || 0}</td>
                     <td class="detail-fiches-cell">${fichesDetailHtml}</td>
-                    <td>${montantTotal.toLocaleString()} Fc</td>
+                    <td>${formaterMontant(montantTotal)}</td>
                     <td>${t.isDuplicata ? 'Duplicata' : 'Original'}</td>
                     <td>${actionButton}</td>
                 </tr>`;
@@ -2791,182 +3021,182 @@
             }
         }
         
-        // Variables pour stocker les informations du duplicata en cours
-let duplicataEnCours = null;
-
-// Fonction principale de demande de duplicata
-window.genererDuplicata = async function(id) {
-    try {
-        const doc = await db.collection('transactions').doc(id).get();
-        if (!doc.exists) {
-            showToast('Transaction introuvable', 'error');
-            return;
-        }
-        
-        const transaction = doc.data();
-        
-        // Stocker les informations pour le traitement
-        duplicataEnCours = {
-            id: id,
-            transaction: transaction,
-            nombreFiches: transaction.fiches ? transaction.fiches.length : 1,
-            fraisDuplicata: (transaction.fiches ? transaction.fiches.length : 1) * 10000
+        window.genererDuplicata = async function(id) {
+            try {
+                const doc = await db.collection('transactions').doc(id).get();
+                if (!doc.exists) {
+                    showToast('Transaction introuvable', 'error');
+                    return;
+                }
+                
+                const transaction = doc.data();
+                
+                duplicataEnCours = {
+                    id: id,
+                    transaction: transaction,
+                    nombreFiches: transaction.fiches ? transaction.fiches.length : 1,
+                    fraisDuplicata: (transaction.fiches ? transaction.fiches.length : 1) * 10000
+                };
+                
+                const infoDiv = document.getElementById('duplicataTransactionInfo');
+                const fraisFormatted = formaterMontantDual(duplicataEnCours.fraisDuplicata);
+                infoDiv.innerHTML = `
+                    <div class="info-row">
+                        <span class="info-label">N° Reçu :</span>
+                        <span class="info-value">${transaction.numeroRecu || id}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Étudiant :</span>
+                        <span class="info-value">${escapeHtml(transaction.etudiantNom || '-')}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Nombre de fiches :</span>
+                        <span class="info-value">${duplicataEnCours.nombreFiches}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Frais duplicata :</span>
+                        <span class="info-value" style="color: #ff9800;">${fraisFormatted.hybride}</span>
+                    </div>
+                `;
+                
+                document.getElementById('duplicataConfirmOverlay').style.display = 'flex';
+                document.getElementById('duplicataValidationOverlay').style.display = 'none';
+                document.getElementById('duplicataValidationInput').value = '';
+                document.getElementById('duplicataError').classList.remove('show');
+                
+            } catch (error) {
+                console.error('Erreur lors de la préparation du duplicata:', error);
+                showToast('Erreur: ' + error.message, 'error');
+            }
         };
-        
-        // Afficher les informations dans la boîte de dialogue
-        const infoDiv = document.getElementById('duplicataTransactionInfo');
-        infoDiv.innerHTML = `
-            <div class="info-row">
-                <span class="info-label">N° Reçu :</span>
-                <span class="info-value">${transaction.numeroRecu || id}</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Étudiant :</span>
-                <span class="info-value">${escapeHtml(transaction.etudiantNom || '-')}</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Nombre de fiches :</span>
-                <span class="info-value">${duplicataEnCours.nombreFiches}</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Frais duplicata :</span>
-                <span class="info-value" style="color: #ff9800;">${duplicataEnCours.fraisDuplicata.toLocaleString()} FC</span>
-            </div>
-        `;
-        
-        // Afficher la première boîte de dialogue
-        document.getElementById('duplicataConfirmOverlay').style.display = 'flex';
-        document.getElementById('duplicataValidationOverlay').style.display = 'none';
-        
-        // Réinitialiser le champ de validation
-        document.getElementById('duplicataValidationInput').value = '';
-        document.getElementById('duplicataError').classList.remove('show');
-        
-    } catch (error) {
-        console.error('Erreur lors de la préparation du duplicata:', error);
-        showToast('Erreur: ' + error.message, 'error');
-    }
-};
 
-// Fonction pour annuler le duplicata
-function annulerDuplicata() {
-    duplicataEnCours = null;
-    document.getElementById('duplicataConfirmOverlay').style.display = 'none';
-    document.getElementById('duplicataValidationOverlay').style.display = 'none';
-    document.getElementById('duplicataValidationInput').value = '';
-    document.getElementById('duplicataError').classList.remove('show');
-}
-window.annulerDuplicata = annulerDuplicata;
-
-// Fonction pour la première confirmation
-function confirmerPremiereEtape() {
-    // Cacher la première boîte de dialogue
-    document.getElementById('duplicataConfirmOverlay').style.display = 'none';
-    
-    // Afficher la deuxième boîte de dialogue
-    document.getElementById('duplicataValidationOverlay').style.display = 'flex';
-    
-    // Focus sur le champ de saisie
-    setTimeout(() => {
-        document.getElementById('duplicataValidationInput').focus();
-    }, 300);
-}
-window.confirmerPremiereEtape = confirmerPremiereEtape;
-
-// Fonction finale pour confirmer et exécuter le duplicata
-async function confirmerDuplicata() {
-    const inputValue = document.getElementById('duplicataValidationInput').value.trim();
-    const errorMessage = document.getElementById('duplicataError');
-    const inputField = document.getElementById('duplicataValidationInput');
-    
-    // Vérifier si la valeur entrée est bien "1"
-    if (inputValue !== '1') {
-        // Afficher l'erreur
-        errorMessage.classList.add('show');
-        inputField.classList.add('error');
-        
-        // Animation de secousse
-        setTimeout(() => {
-            inputField.classList.remove('error');
-        }, 500);
-        
-        // Vider le champ pour une nouvelle tentative
-        inputField.value = '';
-        inputField.focus();
-        
-        return;
-    }
-    
-    // Si la validation est correcte, procéder au duplicata
-    if (!duplicataEnCours) {
-        annulerDuplicata();
-        showToast('Erreur: session expirée', 'error');
-        return;
-    }
-    
-    const { id, transaction, nombreFiches, fraisDuplicata } = duplicataEnCours;
-    const montantLettresDuplicata = numberToWords(fraisDuplicata);
-    
-    // Désactiver le bouton pour éviter les doubles clics
-    const btnFinaliser = document.getElementById('btnFinaliserDuplicata');
-    btnFinaliser.disabled = true;
-    btnFinaliser.innerHTML = '<i class="bi bi-hourglass-split"></i> Traitement en cours...';
-    
-    try {
-        // Mise à jour Firestore
-        await db.collection('transactions').doc(id).update({
-            isDuplicata: true,
-            duplicataFrais: firebase.firestore.FieldValue.increment(fraisDuplicata),
-            duplicataDate: firebase.firestore.FieldValue.serverTimestamp(),
-            nombreDuplicatas: firebase.firestore.FieldValue.increment(1),
-            dernierFraisDuplicata: fraisDuplicata
-        });
-        
-        // Fermer les boîtes de dialogue
-        annulerDuplicata();
-        
-        showToast(`Duplicata généré : ${fraisDuplicata.toLocaleString()} FC (${nombreFiches} fiche(s) × 10 000 FC)`, 'success');
-        
-        // Impression du duplicata
-        await imprimerAF250(
-            { 
-                etudiantNom: transaction.etudiantNom, 
-                etudiantMatricule: transaction.etudiantMatricule 
-            },
-            transaction.fiches || [],
-            transaction.montantTotal || 0,
-            transaction.anneeAcademiqueNom || '-',
-            transaction.promotionNom || '-',
-            montantLettresDuplicata,
-            `${transaction.numeroRecu || id}-DUP`,
-            true,
-            fraisDuplicata
-        );
-        
-        // Rafraîchir le rapport si ouvert
-        if (document.getElementById('pageRapport').classList.contains('active')) {
-            await genererRapport();
+        function annulerDuplicata() {
+            duplicataEnCours = null;
+            document.getElementById('duplicataConfirmOverlay').style.display = 'none';
+            document.getElementById('duplicataValidationOverlay').style.display = 'none';
+            document.getElementById('duplicataValidationInput').value = '';
+            document.getElementById('duplicataError').classList.remove('show');
         }
-        
-        // Mettre à jour les statistiques
-        await mettreAJourStatsHeader();
-        await calculerSolde();
-        
-    } catch (error) {
-        console.error('Erreur lors du duplicata:', error);
-        showToast('Erreur: ' + error.message, 'error');
-        
-        // Réactiver le bouton en cas d'erreur
-        btnFinaliser.disabled = false;
-        btnFinaliser.innerHTML = '<i class="bi bi-check-circle"></i> Valider et imprimer';
-    }
-}
-window.confirmerDuplicata = confirmerDuplicata;
+        window.annulerDuplicata = annulerDuplicata;
+
+        function confirmerPremiereEtape() {
+            document.getElementById('duplicataConfirmOverlay').style.display = 'none';
+            document.getElementById('duplicataValidationOverlay').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('duplicataValidationInput').focus();
+            }, 300);
+        }
+        window.confirmerPremiereEtape = confirmerPremiereEtape;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const validationInput = document.getElementById('duplicataValidationInput');
+            if (validationInput) {
+                validationInput.addEventListener('input', function() {
+                    document.getElementById('duplicataError').classList.remove('show');
+                    this.classList.remove('error');
+                });
+                validationInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        confirmerDuplicata();
+                    }
+                });
+            }
+        });
+
+        async function confirmerDuplicata() {
+            const inputValue = document.getElementById('duplicataValidationInput').value.trim();
+            const errorMessage = document.getElementById('duplicataError');
+            const inputField = document.getElementById('duplicataValidationInput');
+            
+            if (inputValue !== '1') {
+                errorMessage.classList.add('show');
+                inputField.classList.add('error');
+                setTimeout(() => {
+                    inputField.classList.remove('error');
+                }, 500);
+                inputField.value = '';
+                inputField.focus();
+                return;
+            }
+            
+            if (!duplicataEnCours) {
+                annulerDuplicata();
+                showToast('Erreur: session expirée', 'error');
+                return;
+            }
+            
+            const { id, transaction, nombreFiches, fraisDuplicata } = duplicataEnCours;
+            const montantLettresDuplicata = numberToWords(fraisDuplicata);
+            
+            const btnFinaliser = document.getElementById('btnFinaliserDuplicata');
+            btnFinaliser.disabled = true;
+            btnFinaliser.innerHTML = '<i class="bi bi-hourglass-split"></i> Traitement en cours...';
+            
+            try {
+                await db.collection('transactions').doc(id).update({
+                    isDuplicata: true,
+                    duplicataFrais: firebase.firestore.FieldValue.increment(fraisDuplicata),
+                    duplicataDate: firebase.firestore.FieldValue.serverTimestamp(),
+                    nombreDuplicatas: firebase.firestore.FieldValue.increment(1),
+                    dernierFraisDuplicata: fraisDuplicata
+                });
+                
+                annulerDuplicata();
+                
+                const fraisFormatted = formaterMontantDual(fraisDuplicata);
+                showToast(`Duplicata généré : ${fraisFormatted.hybride} (${nombreFiches} fiche(s) × 10 000 FC)`, 'success');
+                
+                await imprimerAF250(
+                    { 
+                        etudiantNom: transaction.etudiantNom, 
+                        etudiantMatricule: transaction.etudiantMatricule 
+                    },
+                    transaction.fiches || [],
+                    transaction.montantTotal || 0,
+                    transaction.anneeAcademiqueNom || '-',
+                    transaction.promotionNom || '-',
+                    montantLettresDuplicata,
+                    `${transaction.numeroRecu || id}-DUP`,
+                    true,
+                    fraisDuplicata
+                );
+                
+                if (document.getElementById('pageRapport').classList.contains('active')) {
+                    await genererRapport();
+                }
+                
+                await mettreAJourStatsHeader();
+                await calculerSolde();
+                
+            } catch (error) {
+                console.error('Erreur lors du duplicata:', error);
+                showToast('Erreur: ' + error.message, 'error');
+                btnFinaliser.disabled = false;
+                btnFinaliser.innerHTML = '<i class="bi bi-check-circle"></i> Valider et imprimer';
+            }
+        }
+        window.confirmerDuplicata = confirmerDuplicata;
+
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'duplicataConfirmOverlay' || e.target.id === 'duplicataValidationOverlay') {
+                annulerDuplicata();
+            }
+        });
+
+        document.querySelectorAll('.confirmation-dialog').forEach(dialog => {
+            dialog.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
 
         function clearRapportSearch() {
             document.getElementById('rapportSearchEtudiant').value = '';
             filterRapportBySearch('');
         }
+        
+        document.getElementById('rapportSearchEtudiant').addEventListener('input', function() {
+            filterRapportBySearch(this.value);
+        });
         
         function exporterExcel() {
             if (!allTransactionsForRapport.length) { showToast('Aucune donnée', 'warning'); return; }
@@ -2978,7 +3208,8 @@ window.confirmerDuplicata = confirmerDuplicata;
                 'Promotion': t.promotionNom || '-',
                 'Année': t.anneeAcademiqueNom || '-',
                 'Fiches': t.fiches?.map(f => f.nom).join(', ') || '-',
-                'Montant': t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0)
+                'Montant FC': t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0),
+                'Montant USD': convertirFCversUSD(t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0)).toFixed(2)
             }));
             const ws = XLSX.utils.json_to_sheet(data);
             const wb = XLSX.utils.book_new();
@@ -2999,7 +3230,7 @@ window.confirmerDuplicata = confirmerDuplicata;
                 t.promotionNom || '-',
                 t.anneeAcademiqueNom || '-',
                 t.fiches?.map(f => f.nom).join(', ') || '-',
-                (t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0)).toLocaleString() + ' FC'
+                formaterMontant(t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0))
             ]);
             doc.autoTable({
                 head: [['Date', 'N° Reçu', 'Type', 'Étudiant', 'Promotion', 'Année', 'Fiches', 'Montant']],
@@ -3041,6 +3272,13 @@ window.confirmerDuplicata = confirmerDuplicata;
             showToast('Rapport imprimé avec succès', 'success');
         }
         
+        // Filtres dépenses
+        document.getElementById('filtrerDepensesBtn')?.addEventListener('click', () => {
+            const dateDebut = document.getElementById('depenseDateDebut').value;
+            const dateFin = document.getElementById('depenseDateFin').value;
+            chargerDepenses(dateDebut, dateFin);
+        });
+        
         // Profile
         document.getElementById('profileBtn').onclick = () => {
             document.getElementById('profilNom').textContent = utilisateurActuel.nomComplet;
@@ -3070,73 +3308,6 @@ window.confirmerDuplicata = confirmerDuplicata;
             document.getElementById('confirmNewPassword').value = '';
         };
         
-        // ==================== INITIALISATION DES ÉVÉNEMENTS ====================
-        
-        // Initialisation quand le DOM est prêt
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM chargé - Initialisation des événements');
-            
-            // Bouton Appliquer les filtres
-            const btnAppliquerFiltres = document.getElementById('btnAppliquerFiltres');
-            if (btnAppliquerFiltres) {
-                console.log('Bouton Appliquer les filtres trouvé');
-                btnAppliquerFiltres.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    console.log('Clic sur Appliquer les filtres');
-                    genererRapport();
-                });
-            } else {
-                console.error('Bouton Appliquer les filtres NON trouvé');
-            }
-            
-            // Bouton Filtrer dépenses
-            const btnFiltrerDepenses = document.getElementById('filtrerDepensesBtn');
-            if (btnFiltrerDepenses) {
-                btnFiltrerDepenses.addEventListener('click', function() {
-                    const dateDebut = document.getElementById('depenseDateDebut').value;
-                    const dateFin = document.getElementById('depenseDateFin').value;
-                    chargerDepenses(dateDebut, dateFin);
-                });
-            }
-            
-            // Validation duplicata avec touche Entrée
-            const validationInput = document.getElementById('duplicataValidationInput');
-            if (validationInput) {
-                validationInput.addEventListener('input', function() {
-                    document.getElementById('duplicataError').classList.remove('show');
-                    this.classList.remove('error');
-                });
-                
-                validationInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        confirmerDuplicata();
-                    }
-                });
-            }
-            
-            // Fermer les overlays en cliquant à l'extérieur
-            document.addEventListener('click', function(e) {
-                if (e.target.id === 'duplicataConfirmOverlay' || e.target.id === 'duplicataValidationOverlay') {
-                    annulerDuplicata();
-                }
-            });
-            
-            // Empêcher la propagation des clics à l'intérieur des boîtes de dialogue
-            document.querySelectorAll('.confirmation-dialog').forEach(dialog => {
-                dialog.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
-            });
-            
-            // Recherche dans le rapport
-            const rapportSearchInput = document.getElementById('rapportSearchEtudiant');
-            if (rapportSearchInput) {
-                rapportSearchInput.addEventListener('input', function() {
-                    filterRapportBySearch(this.value);
-                });
-            }
-        });
-        
         // Exposer les fonctions globalement
         window.openPage = openPage;
         window.closePage = closePage;
@@ -3149,15 +3320,17 @@ window.confirmerDuplicata = confirmerDuplicata;
         window.reimprimer = reimprimer;
         window.reimprimerDepense = reimprimerDepense;
         window.validerDepense = validerDepense;
-        window.annulerDuplicata = annulerDuplicata;
-        window.confirmerPremiereEtape = confirmerPremiereEtape;
-        window.confirmerDuplicata = confirmerDuplicata;
+        window.changerDevise = changerDevise;
         
         // Initialisation
         mettreAJourStatsHeader();
         calculerSolde();
         chargerDepenses();
-        console.log('Application prête avec gestion des duplicatas et rapport par fiche');
+        document.getElementById('currencySelect').value = deviseActuelle;
+        if (deviseActuelle === 'USD') {
+            document.getElementById('rateBadge').textContent = '1 FC = 0.00043 $';
+        }
+        console.log('Application prête avec conversion hybride FC/USD (1$ = 23 00 FC)');
     </script>
 </body>
 </html>
