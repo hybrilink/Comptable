@@ -112,7 +112,6 @@
             gap: 10px;
         }
 
-        /* Styles pour la conversion de devise */
         .currency-selector {
             background: rgba(255, 255, 255, 0.15);
             border-radius: 25px;
@@ -146,207 +145,6 @@
             font-size: 12px;
             color: white;
             font-weight: bold;
-        }
-
-        .dual-price {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .price-fc {
-            font-weight: bold;
-            color: #003366;
-        }
-
-        .price-usd {
-            font-size: 12px;
-            color: #666;
-            font-style: italic;
-        }
-
-        .price-usd-inverted {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
-            font-style: italic;
-        }
-
-        .amount-display {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .amount-primary {
-            font-weight: bold;
-            font-size: 28px;
-        }
-
-        .amount-secondary {
-            font-size: 16px;
-            opacity: 0.7;
-        }
-
-        /* Styles pour la boîte de dialogue de confirmation */
-        .confirmation-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .confirmation-dialog {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 450px;
-            width: 90%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            text-align: center;
-        }
-
-        .confirmation-dialog .dialog-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-        }
-
-        .confirmation-dialog .dialog-icon.warning {
-            color: #ffc107;
-        }
-
-        .confirmation-dialog .dialog-icon.info {
-            color: #003366;
-        }
-
-        .confirmation-dialog h4 {
-            color: #003366;
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-
-        .confirmation-dialog p {
-            color: #666;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .confirmation-dialog .transaction-info {
-            background: #f0f7ff;
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 20px;
-            text-align: left;
-            font-size: 13px;
-            border-left: 4px solid #003366;
-        }
-
-        .confirmation-dialog .transaction-info .info-row {
-            margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .confirmation-dialog .transaction-info .info-label {
-            color: #666;
-            font-weight: normal;
-        }
-
-        .confirmation-dialog .transaction-info .info-value {
-            color: #003366;
-            font-weight: bold;
-        }
-
-        .confirmation-dialog .dialog-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .confirmation-dialog .btn-confirm {
-            background: linear-gradient(135deg, #ffc107, #ff9800);
-            color: #333;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-        }
-
-        .confirmation-dialog .btn-confirm:hover {
-            background: linear-gradient(135deg, #ff9800, #f57c00);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
-        }
-
-        .confirmation-dialog .btn-cancel {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-        }
-
-        .confirmation-dialog .btn-cancel:hover {
-            background: #5a6268;
-            transform: translateY(-2px);
-        }
-
-        .confirmation-dialog .validation-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #003366;
-            border-radius: 10px;
-            font-size: 16px;
-            text-align: center;
-            margin: 15px 0;
-            transition: all 0.3s;
-        }
-
-        .confirmation-dialog .validation-input:focus {
-            outline: none;
-            border-color: #ffb347;
-            box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.2);
-        }
-
-        .confirmation-dialog .validation-input.error {
-            border-color: #dc3545;
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .confirmation-dialog .error-message {
-            color: #dc3545;
-            font-size: 13px;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .confirmation-dialog .error-message.show {
-            display: block;
         }
 
         .btn-paiement {
@@ -1188,21 +986,180 @@
             color: #ff9800;
         }
 
-        .dual-amount {
+        .confirmation-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s ease-out;
         }
 
-        .dual-amount .primary {
-            font-size: 24px;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .confirmation-dialog {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .confirmation-dialog .dialog-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .confirmation-dialog .dialog-icon.warning {
+            color: #ffc107;
+        }
+
+        .confirmation-dialog .dialog-icon.info {
+            color: #003366;
+        }
+
+        .confirmation-dialog h4 {
+            color: #003366;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .confirmation-dialog p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .confirmation-dialog .transaction-info {
+            background: #f0f7ff;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 13px;
+            border-left: 4px solid #003366;
+        }
+
+        .confirmation-dialog .transaction-info .info-row {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .confirmation-dialog .transaction-info .info-label {
+            color: #666;
+            font-weight: normal;
+        }
+
+        .confirmation-dialog .transaction-info .info-value {
+            color: #003366;
             font-weight: bold;
         }
 
-        .dual-amount .secondary {
-            font-size: 14px;
-            opacity: 0.7;
+        .confirmation-dialog .dialog-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .confirmation-dialog .btn-confirm {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: #333;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .confirmation-dialog .btn-confirm:hover {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+        }
+
+        .confirmation-dialog .btn-cancel {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .confirmation-dialog .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .confirmation-dialog .validation-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #003366;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .confirmation-dialog .validation-input:focus {
+            outline: none;
+            border-color: #ffb347;
+            box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.2);
+        }
+
+        .confirmation-dialog .validation-input.error {
+            border-color: #dc3545;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .confirmation-dialog .error-message {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .confirmation-dialog .error-message.show {
+            display: block;
+        }
+
+        .duplicata-success {
+            background: #d4edda;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 2px solid #28a745;
+            text-align: center;
+        }
+
+        .duplicata-success i {
+            font-size: 48px;
+            color: #28a745;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -1211,13 +1168,11 @@
         <div class="container">
             <a class="navbar-brand text-white" href="#"><i class="bi bi-calculator-fill"></i> Faculté Agronomique - Comptabilité</a>
             <div class="navbar-right">
-                <!-- Sélecteur de devise -->
                 <div class="currency-selector">
                     <i class="bi bi-currency-exchange" style="color: white;"></i>
                     <select id="currencySelect" onchange="changerDevise()">
                         <option value="FC">Francs Congolais (FC)</option>
                         <option value="USD">Dollars US ($)</option>
-                      
                     </select>
                     <span class="currency-badge" id="rateBadge">1$ = 23 000 FC</span>
                 </div>
@@ -1495,7 +1450,6 @@
                 </button>
             </div>
             
-            <!-- Carte solde -->
             <div id="soldeCard" class="solde-card">
                 <h3><i class="bi bi-piggy-bank"></i> SOLDE ACTUEL</h3>
                 <div class="solde-montant" id="soldeMontant">0 FC</div>
@@ -1505,7 +1459,6 @@
                 </div>
             </div>
             
-            <!-- Formulaire dépense -->
             <div class="depense-form">
                 <h5><i class="bi bi-pencil-square"></i> Nouvelle dépense</h5>
                 <div class="form-group">
@@ -1525,13 +1478,11 @@
                 </button>
             </div>
             
-            <!-- Liste des dernières dépenses -->
             <div class="info-banner" style="margin-top: 20px;">
                 <i class="bi bi-clock-history"></i> <strong>10 dernières dépenses</strong>
                 <small class="text-muted">(Utilisez les filtres pour voir plus)</small>
             </div>
             
-            <!-- Filtres par date -->
             <div class="filter-date-group">
                 <div class="row">
                     <div class="col-md-5 mb-2">
@@ -1583,12 +1534,12 @@
             </div>
             <h4>Confirmation - Génération de Duplicata</h4>
             <p>Êtes-vous sûr de vouloir générer un duplicata pour ce ticket ?</p>
+            <p class="text-muted" style="font-size: 13px;">
+                <i class="bi bi-info-circle"></i> 
+                Des frais de <strong>10 000 FC</strong> seront appliqués pour le duplicata.
+            </p>
             <div class="transaction-info" id="duplicataTransactionInfo">
             </div>
-            <p class="text-muted" style="font-size: 12px;">
-                <i class="bi bi-info-circle"></i> 
-                Des frais de <strong>10 000 FC par fiche</strong> seront appliqués pour le duplicata.
-            </p>
             <div class="dialog-buttons">
                 <button class="btn-cancel" onclick="annulerDuplicata()">
                     <i class="bi bi-x-circle"></i> Annuler
@@ -1650,12 +1601,11 @@
         db.enablePersistence({ synchronizeTabs: true })
             .then(() => console.log('Persistance active'))
             .catch((err) => console.warn('Erreur persistance:', err));
-        
+
         // ==================== CONVERSION DE DEVISE ====================
-        const TAUX_CONVERSION = 2300; // 1$ = 23 000 FC
-        let deviseActuelle = 'FC'; // 'FC', 'USD', ou 'HYBRID'
+        const TAUX_CONVERSION = 2300;
+        let deviseActuelle = 'FC';
         
-        // Charger la devise sauvegardée
         const deviseSauvegardee = localStorage.getItem('deviseComptabilite');
         if (deviseSauvegardee) {
             deviseActuelle = deviseSauvegardee;
@@ -1666,37 +1616,26 @@
             deviseActuelle = select.value;
             localStorage.setItem('deviseComptabilite', deviseActuelle);
             
-            // Mettre à jour l'affichage du badge
             const rateBadge = document.getElementById('rateBadge');
             if (deviseActuelle === 'USD') {
                 rateBadge.textContent = '1 FC = 0.00043 $';
             } else {
-                rateBadge.textContent = '1$ = 23 00 FC';
+                rateBadge.textContent = '1$ = 23 000 FC';
             }
             
-            // Rafraîchir tous les affichages
             mettreAJourTousLesAffichages();
-            showToast(`Devise changée : ${deviseActuelle === 'FC' ? 'Francs Congolais' : deviseActuelle === 'USD' ? 'Dollars US' : 'Hybride (FC + $)'}`, 'success');
+            showToast(`Devise changée : ${deviseActuelle === 'FC' ? 'Francs Congolais' : 'Dollars US'}`, 'success');
         }
         
         function convertirFCversUSD(montantFC) {
             return montantFC / TAUX_CONVERSION;
         }
         
-        function convertirUSDversFC(montantUSD) {
-            return montantUSD * TAUX_CONVERSION;
-        }
-        
         function formaterMontant(montantFC, forceFormat = null) {
             const format = forceFormat || deviseActuelle;
-            
             switch(format) {
                 case 'USD':
-                    const usd = convertirFCversUSD(montantFC);
-                    return `$ ${usd.toFixed(2)}`;
-                case 'HYBRID':
-                    const usdHybrid = convertirFCversUSD(montantFC);
-                    return `${montantFC.toLocaleString()} FC ($ ${usdHybrid.toFixed(2)})`;
+                    return `$ ${convertirFCversUSD(montantFC).toFixed(2)}`;
                 case 'FC':
                 default:
                     return `${montantFC.toLocaleString()} FC`;
@@ -1713,30 +1652,18 @@
         }
         
         function mettreAJourTousLesAffichages() {
-            // Mettre à jour le total du panier
             updateTotal();
-            
-            // Mettre à jour les stats du header
             mettreAJourStatsHeader();
-            
-            // Mettre à jour le solde
             calculerSolde();
-            
-            // Mettre à jour le rapport si affiché
             if (document.getElementById('pageRapport').classList.contains('active')) {
                 genererRapport();
             }
-            
-            // Mettre à jour les dépenses si affichées
             if (document.getElementById('pageDepense').classList.contains('active')) {
                 chargerDepenses();
             }
-            
-            // Mettre à jour le select
             document.getElementById('currencySelect').value = deviseActuelle;
         }
         
-        // Initialiser le select au chargement
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('currencySelect').value = deviseActuelle;
             if (deviseActuelle === 'USD') {
@@ -1745,7 +1672,7 @@
         });
         
         window.changerDevise = changerDevise;
-        
+
         // ==================== VARIABLES GLOBALES ====================
         let currentStudent = null;
         let selectedFiches = [];
@@ -1831,9 +1758,6 @@
                 commands.push(0x0A);
                 commands.push(...textToBytes(formatCenter('(Copie - Document original deja emis)', WIDTH)));
                 commands.push(0x0A);
-                commands.push(...textToBytes(formatCenter('MONTANTS ORIGINAUX DEJA PAYES', WIDTH)));
-                commands.push(0x0A);
-                commands.push(...textToBytes(formatCenter('SEULS LES FRAIS DUPLICATA SONT DUS', WIDTH)));
             } else {
                 commands.push(...textToBytes(formatCenter('RECU DE PAIEMENT OFFICIEL', WIDTH)));
             }
@@ -1846,8 +1770,6 @@
             commands.push(0x0A);
             if (isDuplicata) {
                 commands.push(...textToBytes(formatLine('TYPE : ', 'DUPLICATA', WIDTH)));
-                commands.push(0x0A);
-                commands.push(...textToBytes(formatLine('NB FICHES : ', fiches.length.toString(), WIDTH)));
                 commands.push(0x0A);
             }
             commands.push(0x1B, 0x21, 0x00);
@@ -1874,9 +1796,7 @@
                 let ficheNom = (fiche.nom || 'FICHE').substring(0, 32);
                 let fichePrix = (fiche.prix || 0).toLocaleString();
                 if (isDuplicata) {
-                    commands.push(...textToBytes(formatLine(`  ${ficheNom}`, `${fichePrix} FC (paye)`, WIDTH)));
-                    commands.push(0x0A);
-                    commands.push(...textToBytes(formatLine(`  Frais duplicata`, `10 000 FC`, WIDTH)));
+                    commands.push(...textToBytes(formatLine(`  ${ficheNom}`, `${fichePrix} FC (deja paye)`, WIDTH)));
                     commands.push(0x0A);
                 } else {
                     commands.push(...textToBytes(formatLine(`  ${ficheNom}`, `${fichePrix} FC`, WIDTH)));
@@ -1884,14 +1804,16 @@
                 }
             }
             
+            if (isDuplicata) {
+                addSeparator(commands, '-', WIDTH);
+                commands.push(0x1B, 0x21, 0x08);
+                commands.push(...textToBytes(formatLine('FRAIS DUPLICATA', `${fraisDuplicata.toLocaleString()} FC`, WIDTH)));
+                commands.push(0x0A);
+            }
+            
             addSeparator(commands, '-', WIDTH);
             commands.push(0x1B, 0x21, 0x08);
             if (isDuplicata) {
-                commands.push(...textToBytes(formatLine('MONTANT DEJA PAYE : ', `${total.toLocaleString()} FC`, WIDTH)));
-                commands.push(0x0A);
-                commands.push(...textToBytes(formatLine('FRAIS DUPLICATA : ', `${fraisDuplicata.toLocaleString()} FC`, WIDTH)));
-                commands.push(0x0A);
-                commands.push(0x1B, 0x21, 0x10);
                 commands.push(...textToBytes(formatLine('TOTAL A PAYER (duplicata) : ', `${fraisDuplicata.toLocaleString()} FC`, WIDTH)));
             } else {
                 commands.push(...textToBytes(formatLine('TOTAL A PAYER : ', `${total.toLocaleString()} FC`, WIDTH)));
@@ -1900,7 +1822,11 @@
             commands.push(0x1B, 0x21, 0x00);
             addSeparator(commands, '-', WIDTH);
             commands.push(0x1B, 0x61, 0x01);
-            commands.push(...textToBytes(formatCenter(montantLettres, WIDTH)));
+            if (isDuplicata) {
+                commands.push(...textToBytes(formatCenter(numberToWords(fraisDuplicata), WIDTH)));
+            } else {
+                commands.push(...textToBytes(formatCenter(montantLettres, WIDTH)));
+            }
             commands.push(0x0A);
             commands.push(0x0A);
             commands.push(0x1B, 0x61, 0x00);
@@ -2056,34 +1982,6 @@
             return false;
         }
 
-        async function imprimerRapportTicket(transactions, stats, filtres) {
-            const commands = generateRapportESCPOS(transactions, stats, filtres);
-            if (printerDevice) {
-                try {
-                    await printerDevice.transferOut(1, commands);
-                    await new Promise(r => setTimeout(r, 100));
-                    showToast('Rapport imprimé avec succès', 'success');
-                    return true;
-                } catch (e) { console.warn('Erreur USB:', e); }
-            }
-            imprimerRapportFallback(transactions, stats, filtres);
-            return false;
-        }
-
-        async function imprimerDepense(montant, motif, numeroTicket, soldeActuel) {
-            const commands = generateDepenseESCPOS(montant, motif, numeroTicket, soldeActuel);
-            if (printerDevice) {
-                try {
-                    await printerDevice.transferOut(1, commands);
-                    await new Promise(r => setTimeout(r, 100));
-                    showToast('Ticket de dépense imprimé', 'success');
-                    return true;
-                } catch (e) { console.warn('Erreur USB:', e); }
-            }
-            imprimerDepenseFallback(montant, motif, numeroTicket, soldeActuel);
-            return false;
-        }
-
         function imprimerFallback(transaction, fiches, total, annee, promoNom, montantLettres, numeroRecu, isDuplicata = false, fraisDuplicata = 0) {
             const date = new Date().toLocaleDateString('fr-FR');
             const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
@@ -2095,8 +1993,6 @@
             if (isDuplicata) {
                 ticket += '       DUPLICATA - RECU DE PAIEMENT\n';
                 ticket += '    (Copie - Document original deja emis)\n';
-                ticket += '  MONTANTS ORIGINAUX DEJA PAYES\n';
-                ticket += '  SEULS LES FRAIS DUPLICATA SONT DUS\n';
             } else {
                 ticket += '         RECU DE PAIEMENT OFFICIEL\n';
             }
@@ -2104,7 +2000,6 @@
             ticket += `N° RECU : ${numeroRecu}\n`;
             if (isDuplicata) {
                 ticket += `TYPE : DUPLICATA\n`;
-                ticket += `NB FICHES : ${fiches.length}\n`;
             }
             ticket += '----------------------------------------\n';
             ticket += `ETUDIANT : ${transaction.etudiantNom}\n`;
@@ -2119,22 +2014,28 @@
             }
             for (let fiche of fiches) {
                 if (isDuplicata) {
-                    ticket += `  - ${fiche.nom} : ${(fiche.prix || 0).toLocaleString()} FC (paye)\n`;
-                    ticket += `    Frais duplicata : 10 000 FC\n`;
+                    ticket += `  - ${fiche.nom} : ${(fiche.prix || 0).toLocaleString()} FC (deja paye)\n`;
                 } else {
                     ticket += `  - ${fiche.nom} : ${(fiche.prix || 0).toLocaleString()} FC\n`;
                 }
             }
+            if (isDuplicata) {
+                ticket += '----------------------------------------\n';
+                ticket += `FRAIS DUPLICATA : ${fraisDuplicata.toLocaleString()} FC\n`;
+            }
             ticket += '----------------------------------------\n';
             if (isDuplicata) {
-                ticket += `MONTANT DEJA PAYE : ${total.toLocaleString()} FC\n`;
-                ticket += `FRAIS DUPLICATA : ${fraisDuplicata.toLocaleString()} FC\n`;
                 ticket += `TOTAL A PAYER (duplicata) : ${fraisDuplicata.toLocaleString()} FC\n`;
             } else {
                 ticket += `TOTAL A PAYER : ${total.toLocaleString()} FC\n`;
             }
             ticket += '----------------------------------------\n';
-            ticket += `           ${montantLettres}\n\n`;
+            if (isDuplicata) {
+                ticket += `           ${numberToWords(fraisDuplicata)}\n`;
+            } else {
+                ticket += `           ${montantLettres}\n`;
+            }
+            ticket += '\n';
             ticket += `DATE : ${date} ${heure}\n`;
             ticket += `COMPTABLE : ${utilisateurActuel.nomComplet || 'Comptable'}\n`;
             ticket += '========================================\n';
@@ -2156,108 +2057,6 @@
             `);
             printWindow.document.close();
             showToast(isDuplicata ? 'Duplicata envoyé à l\'imprimante' : 'Ticket envoyé à l\'imprimante', 'success');
-        }
-
-        function imprimerRapportFallback(transactions, stats, filtres) {
-            const date = new Date().toLocaleDateString('fr-FR');
-            const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            
-            const fichesStats = {};
-            transactions.forEach(t => {
-                if (t.fiches && Array.isArray(t.fiches)) {
-                    t.fiches.forEach(fiche => {
-                        const nomFiche = fiche.nom || 'Fiche inconnue';
-                        if (!fichesStats[nomFiche]) {
-                            fichesStats[nomFiche] = { count: 0, total: 0 };
-                        }
-                        fichesStats[nomFiche].count++;
-                        fichesStats[nomFiche].total += (fiche.prix || 0);
-                    });
-                }
-            });
-            
-            let ticket = '';
-            ticket += '\n';
-            ticket += '  UNIVERSITE DE LUBUMBASHI\n';
-            ticket += '    FACULTE DES SCIENCES AGRONOMIQUES\n';
-            ticket += '========================================\n';
-            ticket += '       RAPPORT DE TRANSACTIONS\n';
-            ticket += '========================================\n';
-            ticket += `DATE : ${date} ${heure}\n`;
-            if (filtres) ticket += `FILTRES : ${filtres}\n`;
-            ticket += '----------------------------------------\n';
-            ticket += `TOTAL COLLECTE : ${stats.totalMontant.toLocaleString()} FC\n`;
-            ticket += `NB TRANSACTIONS : ${stats.totalTransactions}\n`;
-            ticket += `NB ETUDIANTS : ${stats.totalEtudiants}\n`;
-            ticket += '----------------------------------------\n';
-            
-            if (Object.keys(fichesStats).length > 0) {
-                ticket += '========================================\n';
-                ticket += '        DETAIL PAR FICHE\n';
-                ticket += '----------------------------------------\n';
-                ticket += 'FICHE          NB ETUD.    MONTANT\n';
-                ticket += '----------------------------------------\n';
-                for (const [nomFiche, statsFiche] of Object.entries(fichesStats)) {
-                    const nomTronque = nomFiche.length > 24 ? nomFiche.substring(0, 24) + '...' : nomFiche;
-                    ticket += `${nomTronque}  ${statsFiche.count} etud.   ${statsFiche.total.toLocaleString()} FC\n`;
-                }
-            }
-            
-            ticket += '========================================\n';
-            ticket += '          FIN DU RAPPORT\n';
-            ticket += '========================================\n';
-            ticket += '\n\n';
-            const printWindow = window.open('', '_blank', 'width=400,height=600');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Rapport de transactions</title>
-                    <style>body{font-family:'Courier New',monospace;font-size:12px;margin:0;padding:10px;width:80mm;}pre{font-family:'Courier New',monospace;font-size:11px;margin:0;white-space:pre-wrap;}@media print{body{margin:0;padding:0;}}</style>
-                </head>
-                <body><pre>${ticket}</pre>
-                <script>window.onload=function(){window.print();setTimeout(function(){window.close();},1000);};<\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-        }
-
-        function imprimerDepenseFallback(montant, motif, numeroTicket, soldeActuel) {
-            const date = new Date().toLocaleDateString('fr-FR');
-            const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            let ticket = '';
-            ticket += '\n';
-            ticket += '  UNIVERSITE DE LUBUMBASHI\n';
-            ticket += '    FACULTE DES SCIENCES AGRONOMIQUES\n';
-            ticket += '========================================\n';
-            ticket += '          TICKET DE DEPENSE\n';
-            ticket += '========================================\n';
-            ticket += `N° TICKET : ${numeroTicket}\n`;
-            ticket += '----------------------------------------\n';
-            ticket += `MONTANT : ${montant.toLocaleString()} FC\n`;
-            ticket += `MOTIF : ${motif}\n`;
-            ticket += `SOLDE AVANT : ${(soldeActuel + montant).toLocaleString()} FC\n`;
-            ticket += `SOLDE APRES : ${soldeActuel.toLocaleString()} FC\n`;
-            ticket += '----------------------------------------\n';
-            ticket += `DATE : ${date} ${heure}\n`;
-            ticket += `COMPTABLE : ${utilisateurActuel.nomComplet || 'Comptable'}\n`;
-            ticket += '========================================\n';
-            ticket += '        DEPENSE ENREGISTREE\n';
-            ticket += '========================================\n';
-            ticket += '\n\n';
-            const printWindow = window.open('', '_blank', 'width=400,height=600');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Ticket de dépense</title>
-                    <style>body{font-family:'Courier New',monospace;font-size:12px;margin:0;padding:10px;width:80mm;}pre{font-family:'Courier New',monospace;font-size:11px;margin:0;white-space:pre-wrap;}@media print{body{margin:0;padding:0;}}</style>
-                </head>
-                <body><pre>${ticket}</pre>
-                <script>window.onload=function(){window.print();setTimeout(function(){window.close();},1000);};<\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
         }
 
         async function connectPrinter() {
@@ -2282,17 +2081,17 @@
 
         // ==================== FONCTIONS DATE/DUPLICATA ====================
         
-        function estDansLes24Heures(dateTimestamp) {
+        function estDansLes72Heures(dateTimestamp) {
             if (!dateTimestamp) return false;
             const dateTransaction = dateTimestamp.toDate ? dateTimestamp.toDate() : new Date(dateTimestamp);
             const maintenant = new Date();
             const differenceHeures = (maintenant - dateTransaction) / (1000 * 60 * 60);
-            return differenceHeures <= 24;
+            return differenceHeures <= 72;
         }
 
         function peutReimprimer(transaction) {
             if (!transaction.date) return true;
-            return estDansLes24Heures(transaction.date);
+            return estDansLes72Heures(transaction.date);
         }
 
         // ==================== FONCTIONS DÉPENSES ====================
@@ -2303,8 +2102,11 @@
                 totalEntrees = 0;
                 transactionsSnapshot.forEach(doc => {
                     const data = doc.data();
-                    totalEntrees += data.montantTotal || 0;
-                    if (data.duplicataFrais) totalEntrees += data.duplicataFrais;
+                    if (data.isDuplicata) {
+                        totalEntrees += data.dernierFraisDuplicata || data.duplicataFrais || 0;
+                    } else {
+                        totalEntrees += data.montantTotal || 0;
+                    }
                 });
                 
                 const depensesSnapshot = await db.collection('depenses').get();
@@ -2348,8 +2150,11 @@
                 let totalEntreesJour = 0;
                 transactionsSnapshot.forEach(doc => { 
                     const data = doc.data();
-                    totalEntreesJour += data.montantTotal || 0;
-                    if (data.duplicataFrais) totalEntreesJour += data.duplicataFrais;
+                    if (data.isDuplicata) {
+                        totalEntreesJour += data.dernierFraisDuplicata || data.duplicataFrais || 0;
+                    } else {
+                        totalEntreesJour += data.montantTotal || 0;
+                    }
                 });
                 
                 const depensesSnapshot = await db.collection('depenses')
@@ -2443,6 +2248,58 @@
             await imprimerDepense(depense.montant, depense.motif, depense.numeroTicket || depense.id, soldeActuel);
         }
         window.reimprimerDepense = reimprimerDepense;
+
+        async function imprimerDepense(montant, motif, numeroTicket, soldeActuel) {
+            const commands = generateDepenseESCPOS(montant, motif, numeroTicket, soldeActuel);
+            if (printerDevice) {
+                try {
+                    await printerDevice.transferOut(1, commands);
+                    await new Promise(r => setTimeout(r, 100));
+                    showToast('Ticket de dépense imprimé', 'success');
+                    return true;
+                } catch (e) { console.warn('Erreur USB:', e); }
+            }
+            imprimerDepenseFallback(montant, motif, numeroTicket, soldeActuel);
+            return false;
+        }
+
+        function imprimerDepenseFallback(montant, motif, numeroTicket, soldeActuel) {
+            const date = new Date().toLocaleDateString('fr-FR');
+            const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            let ticket = '';
+            ticket += '\n';
+            ticket += '  UNIVERSITE DE LUBUMBASHI\n';
+            ticket += '    FACULTE DES SCIENCES AGRONOMIQUES\n';
+            ticket += '========================================\n';
+            ticket += '          TICKET DE DEPENSE\n';
+            ticket += '========================================\n';
+            ticket += `N° TICKET : ${numeroTicket}\n`;
+            ticket += '----------------------------------------\n';
+            ticket += `MONTANT : ${montant.toLocaleString()} FC\n`;
+            ticket += `MOTIF : ${motif}\n`;
+            ticket += `SOLDE AVANT : ${(soldeActuel + montant).toLocaleString()} FC\n`;
+            ticket += `SOLDE APRES : ${soldeActuel.toLocaleString()} FC\n`;
+            ticket += '----------------------------------------\n';
+            ticket += `DATE : ${date} ${heure}\n`;
+            ticket += `COMPTABLE : ${utilisateurActuel.nomComplet || 'Comptable'}\n`;
+            ticket += '========================================\n';
+            ticket += '        DEPENSE ENREGISTREE\n';
+            ticket += '========================================\n';
+            ticket += '\n\n';
+            const printWindow = window.open('', '_blank', 'width=400,height=600');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Ticket de dépense</title>
+                    <style>body{font-family:'Courier New',monospace;font-size:12px;margin:0;padding:10px;width:80mm;}pre{font-family:'Courier New',monospace;font-size:11px;margin:0;white-space:pre-wrap;}@media print{body{margin:0;padding:0;}}</style>
+                </head>
+                <body><pre>${ticket}</pre>
+                <script>window.onload=function(){window.print();setTimeout(function(){window.close();},1000);};<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
         
         function genererNumeroTicket() {
             const date = new Date();
@@ -2528,6 +2385,11 @@
         }
         
         function escapeHtml(t) { if(!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+        
+        function numberToWords(number) {
+            if (number === 0) return 'ZERO FRANC';
+            return number.toLocaleString() + ' FRANCS CONGOLAIS';
+        }
         
         async function verifierFichesPayees(etudiantId, anneeId) {
             if (!etudiantId || !anneeId) return [];
@@ -2838,7 +2700,7 @@
             
             const usdEl = document.getElementById('totalAmountUSD');
             if (usdEl) {
-                if (deviseActuelle === 'HYBRID' || deviseActuelle === 'USD') {
+                if (deviseActuelle === 'FC') {
                     usdEl.innerHTML = `(${dual.usd})`;
                     usdEl.style.display = 'block';
                 } else {
@@ -2850,11 +2712,6 @@
         
         function genererNumeroRecu() {
             return Math.floor(Math.random() * 900) + 100 + '-' + Math.floor(Math.random() * 900) + 100;
-        }
-        
-        function numberToWords(number) {
-            if (number === 0) return 'ZERO FRANC';
-            return number.toLocaleString() + ' FRANCS CONGOLAIS';
         }
         
         async function validerPaiement() {
@@ -2886,7 +2743,8 @@
                 comptableId: utilisateurActuel.id,
                 isDuplicata: false,
                 duplicataFrais: 0,
-                dernierFraisDuplicata: 0
+                dernierFraisDuplicata: 0,
+                nombreDuplicatas: 0
             };
             const btn = document.getElementById('validerPaiementBtn');
             btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Traitement...';
@@ -2971,7 +2829,7 @@
                 const fichesNoms = t.fiches?.map(f => f.nom).join(', ') || '-';
                 const fichesDetailHtml = t.fiches?.map(f => {
                     if (t.isDuplicata) {
-                        return `<span class="fiche-detail-badge">${escapeHtml(f.nom || 'Fiche')} : ${formaterMontant(f.prix || 0)} (payé) + 10 000 FC frais</span>`;
+                        return `<span class="fiche-detail-badge">${escapeHtml(f.nom || 'Fiche')} : ${formaterMontant(f.prix || 0)} (payé) + 10 000 FC frais duplicata</span>`;
                     }
                     return `<span class="fiche-detail-badge">${escapeHtml(f.nom || 'Fiche')} : ${formaterMontant(f.prix || 0)}</span>`;
                 }).join('<br>') || '-';
@@ -3004,7 +2862,7 @@
             if (doc.exists) {
                 const t = doc.data();
                 if (!peutReimprimer(t)) {
-                    showToast('Délai de 24h dépassé. Veuillez utiliser l\'option Duplicata.', 'warning');
+                    showToast('Délai de 72h dépassé. Veuillez utiliser l\'option Duplicata.', 'warning');
                     return;
                 }
                 await imprimerAF250(
@@ -3034,8 +2892,7 @@
                 duplicataEnCours = {
                     id: id,
                     transaction: transaction,
-                    nombreFiches: transaction.fiches ? transaction.fiches.length : 1,
-                    fraisDuplicata: (transaction.fiches ? transaction.fiches.length : 1) * 10000
+                    fraisDuplicata: 10000 // 10 000 FC par transaction
                 };
                 
                 const infoDiv = document.getElementById('duplicataTransactionInfo');
@@ -3051,7 +2908,11 @@
                     </div>
                     <div class="info-row">
                         <span class="info-label">Nombre de fiches :</span>
-                        <span class="info-value">${duplicataEnCours.nombreFiches}</span>
+                        <span class="info-value">${transaction.fiches ? transaction.fiches.length : 0}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Montant original :</span>
+                        <span class="info-value">${formaterMontant(transaction.montantTotal || 0)}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Frais duplicata :</span>
@@ -3125,7 +2986,7 @@
                 return;
             }
             
-            const { id, transaction, nombreFiches, fraisDuplicata } = duplicataEnCours;
+            const { id, transaction, fraisDuplicata } = duplicataEnCours;
             const montantLettresDuplicata = numberToWords(fraisDuplicata);
             
             const btnFinaliser = document.getElementById('btnFinaliserDuplicata');
@@ -3133,10 +2994,37 @@
             btnFinaliser.innerHTML = '<i class="bi bi-hourglass-split"></i> Traitement en cours...';
             
             try {
-                await db.collection('transactions').doc(id).update({
+                // Créer une nouvelle transaction pour le duplicata
+                const duplicataNumero = `${transaction.numeroRecu || id}-DUP`;
+                const duplicataTransaction = {
+                    id: duplicataNumero,
+                    numeroRecu: duplicataNumero,
+                    etudiantId: transaction.etudiantId,
+                    etudiantNom: transaction.etudiantNom,
+                    etudiantMatricule: transaction.etudiantMatricule,
+                    promotion: transaction.promotion,
+                    promotionNom: transaction.promotionNom,
+                    anneeAcademiqueId: transaction.anneeAcademiqueId,
+                    anneeAcademiqueNom: transaction.anneeAcademiqueNom,
+                    fiches: transaction.fiches || [],
+                    montantTotal: transaction.montantTotal || 0,
+                    montantLettres: transaction.montantLettres || '',
+                    date: firebase.firestore.FieldValue.serverTimestamp(),
+                    comptable: utilisateurActuel.nomComplet.toUpperCase(),
+                    comptableId: utilisateurActuel.id,
                     isDuplicata: true,
-                    duplicataFrais: firebase.firestore.FieldValue.increment(fraisDuplicata),
-                    duplicataDate: firebase.firestore.FieldValue.serverTimestamp(),
+                    duplicataFrais: fraisDuplicata,
+                    dernierFraisDuplicata: fraisDuplicata,
+                    nombreDuplicatas: (transaction.nombreDuplicatas || 0) + 1,
+                    transactionOriginaleId: id,
+                    numeroRecuOriginal: transaction.numeroRecu || id
+                };
+                
+                // Ajouter la transaction duplicata
+                await db.collection('transactions').doc(duplicataNumero).set(duplicataTransaction);
+                
+                // Mettre à jour la transaction originale
+                await db.collection('transactions').doc(id).update({
                     nombreDuplicatas: firebase.firestore.FieldValue.increment(1),
                     dernierFraisDuplicata: fraisDuplicata
                 });
@@ -3144,8 +3032,9 @@
                 annulerDuplicata();
                 
                 const fraisFormatted = formaterMontantDual(fraisDuplicata);
-                showToast(`Duplicata généré : ${fraisFormatted.hybride} (${nombreFiches} fiche(s) × 10 000 FC)`, 'success');
+                showToast(`Duplicata généré : ${fraisFormatted.hybride} (frais de duplicata)`, 'success');
                 
+                // Imprimer le duplicata
                 await imprimerAF250(
                     { 
                         etudiantNom: transaction.etudiantNom, 
@@ -3156,7 +3045,7 @@
                     transaction.anneeAcademiqueNom || '-',
                     transaction.promotionNom || '-',
                     montantLettresDuplicata,
-                    `${transaction.numeroRecu || id}-DUP`,
+                    duplicataNumero,
                     true,
                     fraisDuplicata
                 );
@@ -3167,6 +3056,9 @@
                 
                 await mettreAJourStatsHeader();
                 await calculerSolde();
+                
+                // Afficher un message de succès dans le rapport
+                showToast('Duplicata enregistré et imprimé avec succès !', 'success');
                 
             } catch (error) {
                 console.error('Erreur lors du duplicata:', error);
@@ -3268,8 +3160,80 @@
             
             const filtresStr = filtres.length > 0 ? filtres.join(', ') : 'Aucun';
             
-            await imprimerRapportTicket(filteredTransactionsForRapport, stats, filtresStr);
-            showToast('Rapport imprimé avec succès', 'success');
+            const commands = generateRapportESCPOS(filteredTransactionsForRapport, stats, filtresStr);
+            if (printerDevice) {
+                try {
+                    await printerDevice.transferOut(1, commands);
+                    await new Promise(r => setTimeout(r, 100));
+                    showToast('Rapport imprimé avec succès', 'success');
+                    return;
+                } catch (e) { console.warn('Erreur USB:', e); }
+            }
+            imprimerRapportFallback(filteredTransactionsForRapport, stats, filtresStr);
+        }
+
+        function imprimerRapportFallback(transactions, stats, filtres) {
+            const date = new Date().toLocaleDateString('fr-FR');
+            const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            
+            const fichesStats = {};
+            transactions.forEach(t => {
+                if (t.fiches && Array.isArray(t.fiches)) {
+                    t.fiches.forEach(fiche => {
+                        const nomFiche = fiche.nom || 'Fiche inconnue';
+                        if (!fichesStats[nomFiche]) {
+                            fichesStats[nomFiche] = { count: 0, total: 0 };
+                        }
+                        fichesStats[nomFiche].count++;
+                        fichesStats[nomFiche].total += (fiche.prix || 0);
+                    });
+                }
+            });
+            
+            let ticket = '';
+            ticket += '\n';
+            ticket += '  UNIVERSITE DE LUBUMBASHI\n';
+            ticket += '    FACULTE DES SCIENCES AGRONOMIQUES\n';
+            ticket += '========================================\n';
+            ticket += '       RAPPORT DE TRANSACTIONS\n';
+            ticket += '========================================\n';
+            ticket += `DATE : ${date} ${heure}\n`;
+            if (filtres) ticket += `FILTRES : ${filtres}\n`;
+            ticket += '----------------------------------------\n';
+            ticket += `TOTAL COLLECTE : ${stats.totalMontant.toLocaleString()} FC\n`;
+            ticket += `NB TRANSACTIONS : ${stats.totalTransactions}\n`;
+            ticket += `NB ETUDIANTS : ${stats.totalEtudiants}\n`;
+            ticket += '----------------------------------------\n';
+            
+            if (Object.keys(fichesStats).length > 0) {
+                ticket += '========================================\n';
+                ticket += '        DETAIL PAR FICHE\n';
+                ticket += '----------------------------------------\n';
+                ticket += 'FICHE          NB ETUD.    MONTANT\n';
+                ticket += '----------------------------------------\n';
+                for (const [nomFiche, statsFiche] of Object.entries(fichesStats)) {
+                    const nomTronque = nomFiche.length > 24 ? nomFiche.substring(0, 24) + '...' : nomFiche;
+                    ticket += `${nomTronque}  ${statsFiche.count} etud.   ${statsFiche.total.toLocaleString()} FC\n`;
+                }
+            }
+            
+            ticket += '========================================\n';
+            ticket += '          FIN DU RAPPORT\n';
+            ticket += '========================================\n';
+            ticket += '\n\n';
+            const printWindow = window.open('', '_blank', 'width=400,height=600');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Rapport de transactions</title>
+                    <style>body{font-family:'Courier New',monospace;font-size:12px;margin:0;padding:10px;width:80mm;}pre{font-family:'Courier New',monospace;font-size:11px;margin:0;white-space:pre-wrap;}@media print{body{margin:0;padding:0;}}</style>
+                </head>
+                <body><pre>${ticket}</pre>
+                <script>window.onload=function(){window.print();setTimeout(function(){window.close();},1000);};<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         }
         
         // Filtres dépenses
@@ -3330,7 +3294,8 @@
         if (deviseActuelle === 'USD') {
             document.getElementById('rateBadge').textContent = '1 FC = 0.00043 $';
         }
-        console.log('Application prête avec conversion hybride FC/USD (1$ = 23 00 FC)');
+        console.log('Application prête avec conversion FC/USD (1$ = 23 000 FC)');
+        console.log('Duplicata: 10 000 FC par transaction, délai 72h');
     </script>
 </body>
 </html>
