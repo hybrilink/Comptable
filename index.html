@@ -1161,6 +1161,26 @@
             color: #28a745;
             margin-bottom: 10px;
         }
+
+        /* Nouveau style pour la carte duplicata dans le rapport */
+        .duplicata-stats-card {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .duplicata-stats-card .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #003366;
+        }
+        .duplicata-stats-card .stat-label {
+            font-size: 14px;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -1372,25 +1392,34 @@
             
             <div id="rapportStatsContainer" style="display: none;">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="stat-card">
                             <i class="bi bi-cash-stack" style="font-size: 40px; color: #28a745;"></i>
                             <div class="stat-number" id="totalMontant">0 Fc</div>
                             <span>Montant total collecté</span>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="stat-card">
                             <i class="bi bi-receipt" style="font-size: 40px; color: #17a2b8;"></i>
                             <div class="stat-number" id="totalTransactions">0</div>
                             <span>Nombre de transactions</span>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="stat-card">
                             <i class="bi bi-people-fill" style="font-size: 40px; color: #ffc107;"></i>
                             <div class="stat-number" id="totalEtudiants">0</div>
                             <span>Étudiants servis</span>
+                        </div>
+                    </div>
+                    <!-- NOUVELLE CARTE DUPLICATA -->
+                    <div class="col-md-3">
+                        <div class="duplicata-stats-card">
+                            <i class="bi bi-files" style="font-size: 40px; color: #003366;"></i>
+                            <div class="stat-number" id="totalDuplicatas">0</div>
+                            <div class="stat-label">Duplicatas servis</div>
+                            <div style="font-size: 14px; font-weight: bold; color: #003366;" id="totalDuplicataMontant">0 Fc</div>
                         </div>
                     </div>
                 </div>
@@ -1846,7 +1875,7 @@
             return new Uint8Array(commands);
         }
 
-        function generateRapportESCPOS(transactions, stats, filtres) {
+        function generateRapportESCPOS(transactions, stats, filtres, duplicataStats) {
             const date = new Date().toLocaleDateString('fr-FR');
             const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             const WIDTH = 48;
@@ -1893,6 +1922,11 @@
             commands.push(...textToBytes(formatLine('NB TRANSACTIONS : ', stats.totalTransactions.toString(), WIDTH)));
             commands.push(0x0A);
             commands.push(...textToBytes(formatLine('NB ETUDIANTS : ', stats.totalEtudiants.toString(), WIDTH)));
+            commands.push(0x0A);
+            // Ajout des stats duplicata
+            commands.push(...textToBytes(formatLine('DUPLICATAS SERVIS : ', duplicataStats.nombre.toString(), WIDTH)));
+            commands.push(0x0A);
+            commands.push(...textToBytes(formatLine('MONTANT DUPLICATAS : ', `${duplicataStats.montant.toLocaleString()} FC`, WIDTH)));
             commands.push(0x0A);
             addSeparator(commands, '-', WIDTH);
             
@@ -2798,15 +2832,29 @@
             document.getElementById('rapportStatsContainer').style.display = 'block';
             document.getElementById('rapportTableContainer').style.display = 'block';
             document.getElementById('rapportSearchSection').style.display = 'block';
-            const totalMontant = transactions.reduce((sum, t) => {
+            
+            // Calcul des stats totales
+            let totalMontant = 0;
+            let totalDuplicataMontant = 0;
+            let nombreDuplicatas = 0;
+            
+            transactions.forEach(t => {
                 if (t.isDuplicata) {
-                    return sum + (t.dernierFraisDuplicata || t.duplicataFrais || 0);
+                    const montantDuplicata = t.dernierFraisDuplicata || t.duplicataFrais || 0;
+                    totalDuplicataMontant += montantDuplicata;
+                    nombreDuplicatas++;
+                    totalMontant += montantDuplicata;
+                } else {
+                    totalMontant += (t.montantTotal || 0);
                 }
-                return sum + (t.montantTotal || 0);
-            }, 0);
+            });
+            
             document.getElementById('totalMontant').innerHTML = formaterMontant(totalMontant);
             document.getElementById('totalTransactions').innerHTML = transactions.length;
             document.getElementById('totalEtudiants').innerHTML = new Set(transactions.map(t => t.etudiantId)).size;
+            document.getElementById('totalDuplicatas').innerHTML = nombreDuplicatas;
+            document.getElementById('totalDuplicataMontant').innerHTML = formaterMontant(totalDuplicataMontant);
+            
             filterRapportBySearch('');
         }
         
@@ -3139,6 +3187,22 @@
                 return;
             }
             
+            let totalDuplicataMontant = 0;
+            let nombreDuplicatas = 0;
+            
+            allTransactionsForRapport.forEach(t => {
+                if (t.isDuplicata) {
+                    const montantDuplicata = t.dernierFraisDuplicata || t.duplicataFrais || 0;
+                    totalDuplicataMontant += montantDuplicata;
+                    nombreDuplicatas++;
+                }
+            });
+            
+            const duplicataStats = {
+                nombre: nombreDuplicatas,
+                montant: totalDuplicataMontant
+            };
+            
             const stats = {
                 totalMontant: allTransactionsForRapport.reduce((sum, t) => {
                     if (t.isDuplicata) return sum + (t.dernierFraisDuplicata || t.duplicataFrais || 0);
@@ -3160,7 +3224,7 @@
             
             const filtresStr = filtres.length > 0 ? filtres.join(', ') : 'Aucun';
             
-            const commands = generateRapportESCPOS(filteredTransactionsForRapport, stats, filtresStr);
+            const commands = generateRapportESCPOS(filteredTransactionsForRapport, stats, filtresStr, duplicataStats);
             if (printerDevice) {
                 try {
                     await printerDevice.transferOut(1, commands);
@@ -3169,10 +3233,10 @@
                     return;
                 } catch (e) { console.warn('Erreur USB:', e); }
             }
-            imprimerRapportFallback(filteredTransactionsForRapport, stats, filtresStr);
+            imprimerRapportFallback(filteredTransactionsForRapport, stats, filtresStr, duplicataStats);
         }
 
-        function imprimerRapportFallback(transactions, stats, filtres) {
+        function imprimerRapportFallback(transactions, stats, filtres, duplicataStats) {
             const date = new Date().toLocaleDateString('fr-FR');
             const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             
@@ -3203,6 +3267,9 @@
             ticket += `TOTAL COLLECTE : ${stats.totalMontant.toLocaleString()} FC\n`;
             ticket += `NB TRANSACTIONS : ${stats.totalTransactions}\n`;
             ticket += `NB ETUDIANTS : ${stats.totalEtudiants}\n`;
+            // Ajout des stats duplicata
+            ticket += `DUPLICATAS SERVIS : ${duplicataStats.nombre}\n`;
+            ticket += `MONTANT DUPLICATAS : ${duplicataStats.montant.toLocaleString()} FC\n`;
             ticket += '----------------------------------------\n';
             
             if (Object.keys(fichesStats).length > 0) {
@@ -3296,6 +3363,7 @@
         }
         console.log('Application prête avec conversion FC/USD (1$ = 23 000 FC)');
         console.log('Duplicata: 10 000 FC par transaction, délai 72h');
+        console.log('✅ Suivi des duplicatas ajouté dans le rapport (carte + impression)');
     </script>
 </body>
 </html>
