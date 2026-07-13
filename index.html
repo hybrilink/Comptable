@@ -1162,7 +1162,6 @@
             margin-bottom: 10px;
         }
 
-        /* Nouveau style pour la carte duplicata dans le rapport */
         .duplicata-stats-card {
             background: linear-gradient(135deg, #ffc107, #ff9800);
             border-radius: 15px;
@@ -1880,8 +1879,23 @@
             const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             const WIDTH = 48;
             
+            // ⭐⭐⭐ CORRECTION IMPORTANTE : Les duplicatas ne doivent plus apparaître dans le détail par fiche ⭐⭐⭐
             const fichesStats = {};
             transactions.forEach(t => {
+                // Si c'est un duplicata, on ne traite pas ses fiches originales
+                if (t.isDuplicata) {
+                    // Optionnel : ajouter une ligne "Frais de duplicata" pour information
+                    const fraisDuplicata = t.dernierFraisDuplicata || t.duplicataFrais || 0;
+                    const nomFiche = 'Frais de duplicata (10 000 FC)';
+                    if (!fichesStats[nomFiche]) {
+                        fichesStats[nomFiche] = { count: 0, total: 0 };
+                    }
+                    fichesStats[nomFiche].count++;
+                    fichesStats[nomFiche].total += fraisDuplicata;
+                    return; // IMPORTANT : On sort pour ne pas traiter les fiches originales
+                }
+                
+                // Traitement normal pour les transactions non duplicata
                 if (t.fiches && Array.isArray(t.fiches)) {
                     t.fiches.forEach(fiche => {
                         const nomFiche = fiche.nom || 'Fiche inconnue';
@@ -1923,7 +1937,6 @@
             commands.push(0x0A);
             commands.push(...textToBytes(formatLine('NB ETUDIANTS : ', stats.totalEtudiants.toString(), WIDTH)));
             commands.push(0x0A);
-            // Ajout des stats duplicata
             commands.push(...textToBytes(formatLine('DUPLICATAS SERVIS : ', duplicataStats.nombre.toString(), WIDTH)));
             commands.push(0x0A);
             commands.push(...textToBytes(formatLine('MONTANT DUPLICATAS : ', `${duplicataStats.montant.toLocaleString()} FC`, WIDTH)));
@@ -3054,6 +3067,7 @@
                     promotionNom: transaction.promotionNom,
                     anneeAcademiqueId: transaction.anneeAcademiqueId,
                     anneeAcademiqueNom: transaction.anneeAcademiqueNom,
+                    // ⭐⭐⭐ CORRECTION : Les fiches sont conservées pour l'information, mais ne seront pas comptées dans le détail ⭐⭐⭐
                     fiches: transaction.fiches || [],
                     montantTotal: transaction.montantTotal || 0,
                     montantLettres: transaction.montantLettres || '',
@@ -3105,7 +3119,6 @@
                 await mettreAJourStatsHeader();
                 await calculerSolde();
                 
-                // Afficher un message de succès dans le rapport
                 showToast('Duplicata enregistré et imprimé avec succès !', 'success');
                 
             } catch (error) {
@@ -3240,8 +3253,21 @@
             const date = new Date().toLocaleDateString('fr-FR');
             const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             
+            // ⭐⭐⭐ CORRECTION : Les duplicatas ne sont plus comptés dans le détail par fiche ⭐⭐⭐
             const fichesStats = {};
             transactions.forEach(t => {
+                if (t.isDuplicata) {
+                    // Ajouter une ligne "Frais de duplicata" pour information
+                    const fraisDuplicata = t.dernierFraisDuplicata || t.duplicataFrais || 0;
+                    const nomFiche = 'Frais de duplicata (10 000 FC)';
+                    if (!fichesStats[nomFiche]) {
+                        fichesStats[nomFiche] = { count: 0, total: 0 };
+                    }
+                    fichesStats[nomFiche].count++;
+                    fichesStats[nomFiche].total += fraisDuplicata;
+                    return;
+                }
+                
                 if (t.fiches && Array.isArray(t.fiches)) {
                     t.fiches.forEach(fiche => {
                         const nomFiche = fiche.nom || 'Fiche inconnue';
@@ -3267,7 +3293,6 @@
             ticket += `TOTAL COLLECTE : ${stats.totalMontant.toLocaleString()} FC\n`;
             ticket += `NB TRANSACTIONS : ${stats.totalTransactions}\n`;
             ticket += `NB ETUDIANTS : ${stats.totalEtudiants}\n`;
-            // Ajout des stats duplicata
             ticket += `DUPLICATAS SERVIS : ${duplicataStats.nombre}\n`;
             ticket += `MONTANT DUPLICATAS : ${duplicataStats.montant.toLocaleString()} FC\n`;
             ticket += '----------------------------------------\n';
@@ -3361,9 +3386,10 @@
         if (deviseActuelle === 'USD') {
             document.getElementById('rateBadge').textContent = '1 FC = 0.00043 $';
         }
-        console.log('Application prête avec conversion FC/USD (1$ = 23 000 FC)');
-        console.log('Duplicata: 10 000 FC par transaction, délai 72h');
-        console.log('✅ Suivi des duplicatas ajouté dans le rapport (carte + impression)');
+        console.log('✅ Application prête avec conversion FC/USD (1$ = 23 000 FC)');
+        console.log('✅ Duplicata: 10 000 FC par transaction, délai 72h');
+        console.log('✅ CORRECTION : Les duplicatas n\'impactent plus le détail par fiche');
+        console.log('✅ Le total collecté = total détail par fiche');
     </script>
 </body>
 </html>
