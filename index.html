@@ -22,7 +22,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     
     <style>
-        /* ===== STYLES (IDENTIQUES À VOTRE VERSION) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { --primary-blue: #003366; --dark-blue: #002244; --accent-yellow: #ffb347; }
         
@@ -1186,7 +1185,7 @@
 <body>
     <nav class="navbar navbar-custom">
         <div class="container">
-            <a class="navbar-brand text-white" href="#"><img src="fsa.png" width="50px" style="border-radius : 50px"> Faculté Agronomique - Comptabilité</a>
+            <a class="navbar-brand text-white" href="#"><i class="bi bi-calculator-fill"></i> Faculté Agronomique - Comptabilité</a>
             <div class="navbar-right">
                 <div class="currency-selector">
                     <i class="bi bi-currency-exchange" style="color: white;"></i>
@@ -1223,7 +1222,7 @@
             <div class="register-card">
                 <div class="logo">
                     <div class="logo-icon">
-                        <img src="fsa.png" width="75px" style="border-radius : 50px">
+                        <i class="bi bi-calculator-fill"></i>
                     </div>
                     <h2>Faculté Agronomique</h2>
                     <p>Espace Comptabilité</p>
@@ -1413,6 +1412,7 @@
                             <span>Étudiants servis</span>
                         </div>
                     </div>
+                    <!-- NOUVELLE CARTE DUPLICATA -->
                     <div class="col-md-3">
                         <div class="duplicata-stats-card">
                             <i class="bi bi-files" style="font-size: 40px; color: #003366;"></i>
@@ -1612,9 +1612,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script>
-        // ========== CONFIGURATION FIREBASE ==========
+        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBb82N2-5ns7qKjQBAj5UvDW87s2PZ27F0",
             authDomain: "fsa-unilu.firebaseapp.com",
@@ -1626,79 +1625,19 @@
         
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const auth = firebase.auth();
         
-        // ⭐ IMPORTANT : Désactiver la persistance pour un chargement plus rapide
-        // La persistance peut ralentir l'affichage des données
         db.enablePersistence({ synchronizeTabs: true })
             .then(() => console.log('Persistance active'))
-            .catch((err) => {
-                console.warn('Persistance non activée:', err);
-                // Continuer sans persistance
-            });
+            .catch((err) => console.warn('Erreur persistance:', err));
 
-        // ========== VÉRIFICATION DE LA SESSION ==========
-        const utilisateurActuel = JSON.parse(localStorage.getItem('utilisateurCompta') || 'null');
-        if (!utilisateurActuel || utilisateurActuel.role !== 'comptabilite') {
-            window.location.href = 'login-comptabilite.html';
-        }
-
-        // ========== DÉCONNEXION ==========
-        document.getElementById('logoutBtn').onclick = async () => {
-            try {
-                await auth.signOut();
-            } catch(e) {}
-            localStorage.removeItem('utilisateurCompta');
-            window.location.href = 'login-comptabilite.html';
-        };
-
-        // ========== PROFIL - CHANGEMENT DE MOT DE PASSE AVEC AUTH ==========
-        document.getElementById('changePasswordBtn').onclick = async () => {
-            const newPwd = document.getElementById('newPassword').value;
-            const confirmPwd = document.getElementById('confirmNewPassword').value;
-            
-            if (newPwd !== confirmPwd) {
-                showToast('Les mots de passe ne correspondent pas', 'warning');
-                return;
-            }
-            if (newPwd.length < 6) {
-                showToast('Le mot de passe doit contenir au moins 6 caractères', 'warning');
-                return;
-            }
-            
-            try {
-                const user = auth.currentUser;
-                if (user) {
-                    await user.updatePassword(newPwd);
-                    
-                    // Mettre à jour la session locale
-                    utilisateurActuel.motDePasse = newPwd;
-                    localStorage.setItem('utilisateurCompta', JSON.stringify(utilisateurActuel));
-                    
-                    showToast('Mot de passe modifié avec succès !', 'success');
-                    closeProfileModal();
-                    document.getElementById('newPassword').value = '';
-                    document.getElementById('confirmNewPassword').value = '';
-                } else {
-                    showToast('Vous devez être connecté pour changer le mot de passe', 'danger');
-                }
-            } catch (error) {
-                showToast('Erreur: ' + error.message, 'danger');
-            }
-        };
-        
-        // ========== PROFIL - AFFICHAGE ==========
-        document.getElementById('profileBtn').onclick = () => {
-            document.getElementById('profilNom').textContent = utilisateurActuel.nomComplet || 'Utilisateur';
-            document.getElementById('profilMatricule').textContent = `Matricule: ${utilisateurActuel.id || '-'}`;
-            document.getElementById('profilEmail').textContent = `Email: ${utilisateurActuel.email || '-'}`;
-            document.getElementById('profileModal').style.display = 'flex';
-        };
-        window.closeProfileModal = () => document.getElementById('profileModal').style.display = 'none';
-
-        // ========== CONVERSION DE DEVISE ==========
+        // ==================== CONVERSION DE DEVISE ====================
         const TAUX_CONVERSION = 2300;
-        let deviseActuelle = localStorage.getItem('deviseComptabilite') || 'FC';
+        let deviseActuelle = 'FC';
+        
+        const deviseSauvegardee = localStorage.getItem('deviseComptabilite');
+        if (deviseSauvegardee) {
+            deviseActuelle = deviseSauvegardee;
+        }
         
         function changerDevise() {
             const select = document.getElementById('currencySelect');
@@ -1753,59 +1692,16 @@
             document.getElementById('currencySelect').value = deviseActuelle;
         }
         
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('currencySelect').value = deviseActuelle;
+            if (deviseActuelle === 'USD') {
+                document.getElementById('rateBadge').textContent = '1 FC = 0.00043 $';
+            }
+        });
+        
         window.changerDevise = changerDevise;
 
-        // ========== FONCTIONS UTILITAIRES ==========
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toastContainer');
-            const bgColor = type === 'success' ? '#28a745' : (type === 'warning' ? '#ffc107' : '#dc3545');
-            const textColor = type === 'warning' ? '#333' : 'white';
-            const icon = type === 'success' ? 'check-circle-fill' : (type === 'warning' ? 'exclamation-triangle-fill' : 'x-circle-fill');
-            const toastHtml = `<div class="toast" style="background: ${bgColor}; color: ${textColor}; border-radius: 10px; margin-bottom: 10px; animation: slideInRight 0.3s ease-out;"><div class="toast-body"><i class="bi bi-${icon} me-2"></i>${message}</div></div>`;
-            container.insertAdjacentHTML('afterbegin', toastHtml);
-            setTimeout(() => container.firstElementChild?.remove(), 4000);
-        }
-        
-        function escapeHtml(t) { if(!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
-        
-        function numberToWords(number) {
-            if (number === 0) return 'ZERO FRANC';
-            return number.toLocaleString() + ' FRANCS CONGOLAIS';
-        }
-        
-        function openPage(page) {
-            document.getElementById('mainPage').style.display = 'none';
-            document.getElementById(`page${page.charAt(0).toUpperCase() + page.slice(1)}`).classList.add('active');
-            if (page === 'rapport') {
-                allTransactionsForRapport = [];
-                filteredTransactionsForRapport = [];
-                document.getElementById('rapportStatsContainer').style.display = 'none';
-                document.getElementById('rapportTableContainer').style.display = 'none';
-                document.getElementById('rapportSearchSection').style.display = 'none';
-                document.getElementById('emptyRapportMessage').style.display = 'block';
-                document.getElementById('dateDebut').value = '';
-                document.getElementById('dateFin').value = '';
-                document.getElementById('rapportAnneeSelect').value = '';
-                document.getElementById('rapportPromotionSelect').value = '';
-                document.getElementById('rapportSearchEtudiant').value = '';
-                document.getElementById('clearRapportSearch').style.display = 'none';
-            } else if (page === 'paiement') {
-                reinitialiserFormulairePaiement();
-            } else if (page === 'depense') {
-                calculerSolde();
-                chargerDepenses();
-            }
-        }
-        
-        function closePage(page) {
-            document.getElementById(`page${page.charAt(0).toUpperCase() + page.slice(1)}`).classList.remove('active');
-            document.getElementById('mainPage').style.display = 'flex';
-        }
-        
-        window.openPage = openPage;
-        window.closePage = closePage;
-
-        // ========== VARIABLES GLOBALES ==========
+        // ==================== VARIABLES GLOBALES ====================
         let currentStudent = null;
         let selectedFiches = [];
         let allStudents = [];
@@ -1821,9 +1717,14 @@
         let totalEntrees = 0;
         let totalSorties = 0;
         let duplicataEnCours = null;
-        let dataLoaded = false;
+        
+        const utilisateurActuel = JSON.parse(localStorage.getItem('utilisateurCompta') || 'null');
+        if (!utilisateurActuel || utilisateurActuel.role !== 'comptabilite') {
+            window.location.href = 'login-comptabilite.html';
+        }
 
-        // ========== FONCTIONS D'IMPRESSION (IDENTIQUES À VOTRE VERSION) ==========
+        // ==================== FONCTIONS D'IMPRESSION ====================
+        
         function textToBytes(text) {
             const encoder = new TextEncoder();
             return encoder.encode(text);
@@ -1978,9 +1879,12 @@
             const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
             const WIDTH = 48;
             
+            // ⭐⭐⭐ CORRECTION IMPORTANTE : Les duplicatas ne doivent plus apparaître dans le détail par fiche ⭐⭐⭐
             const fichesStats = {};
             transactions.forEach(t => {
+                // Si c'est un duplicata, on ne traite pas ses fiches originales
                 if (t.isDuplicata) {
+                    // Optionnel : ajouter une ligne "Frais de duplicata" pour information
                     const fraisDuplicata = t.dernierFraisDuplicata || t.duplicataFrais || 0;
                     const nomFiche = 'Frais de duplicata (10 000 FC)';
                     if (!fichesStats[nomFiche]) {
@@ -1988,9 +1892,10 @@
                     }
                     fichesStats[nomFiche].count++;
                     fichesStats[nomFiche].total += fraisDuplicata;
-                    return;
+                    return; // IMPORTANT : On sort pour ne pas traiter les fiches originales
                 }
                 
+                // Traitement normal pour les transactions non duplicata
                 if (t.fiches && Array.isArray(t.fiches)) {
                     t.fiches.forEach(fiche => {
                         const nomFiche = fiche.nom || 'Fiche inconnue';
@@ -2221,7 +2126,8 @@
         }
         window.connectPrinter = connectPrinter;
 
-        // ========== FONCTIONS DATE/DUPLICATA ==========
+        // ==================== FONCTIONS DATE/DUPLICATA ====================
+        
         function estDansLes72Heures(dateTimestamp) {
             if (!dateTimestamp) return false;
             const dateTransaction = dateTimestamp.toDate ? dateTimestamp.toDate() : new Date(dateTimestamp);
@@ -2235,7 +2141,8 @@
             return estDansLes72Heures(transaction.date);
         }
 
-        // ========== FONCTIONS DÉPENSES ==========
+        // ==================== FONCTIONS DÉPENSES ====================
+        
         async function calculerSolde() {
             try {
                 const transactionsSnapshot = await db.collection('transactions').get();
@@ -2275,7 +2182,6 @@
             }
         }
         
-        // ⭐ FONCTION OPTIMISÉE POUR LE CHARGEMENT RAPIDE DES STATS
         async function mettreAJourStatsHeader() {
             try {
                 const aujourdhui = new Date();
@@ -2283,17 +2189,10 @@
                 const demain = new Date(aujourdhui);
                 demain.setDate(demain.getDate() + 1);
                 
-                // Utiliser des requêtes directes pour plus de rapidité
-                const [transactionsSnapshot, depensesSnapshot] = await Promise.all([
-                    db.collection('transactions')
-                        .where('date', '>=', aujourdhui)
-                        .where('date', '<', demain)
-                        .get(),
-                    db.collection('depenses')
-                        .where('date', '>=', aujourdhui)
-                        .where('date', '<', demain)
-                        .get()
-                ]);
+                const transactionsSnapshot = await db.collection('transactions')
+                    .where('date', '>=', aujourdhui)
+                    .where('date', '<', demain)
+                    .get();
                 
                 let totalEntreesJour = 0;
                 transactionsSnapshot.forEach(doc => { 
@@ -2304,6 +2203,11 @@
                         totalEntreesJour += data.montantTotal || 0;
                     }
                 });
+                
+                const depensesSnapshot = await db.collection('depenses')
+                    .where('date', '>=', aujourdhui)
+                    .where('date', '<', demain)
+                    .get();
                 
                 let totalSortiesJour = 0;
                 depensesSnapshot.forEach(doc => {
@@ -2380,6 +2284,70 @@
             }
         }
         
+        async function reimprimerDepense(id) {
+            const depense = allDepenses.find(d => d.id === id);
+            if (!depense) {
+                showToast('Dépense non trouvée', 'error');
+                return;
+            }
+            
+            const soldeActuel = totalEntrees - totalSorties;
+            await imprimerDepense(depense.montant, depense.motif, depense.numeroTicket || depense.id, soldeActuel);
+        }
+        window.reimprimerDepense = reimprimerDepense;
+
+        async function imprimerDepense(montant, motif, numeroTicket, soldeActuel) {
+            const commands = generateDepenseESCPOS(montant, motif, numeroTicket, soldeActuel);
+            if (printerDevice) {
+                try {
+                    await printerDevice.transferOut(1, commands);
+                    await new Promise(r => setTimeout(r, 100));
+                    showToast('Ticket de dépense imprimé', 'success');
+                    return true;
+                } catch (e) { console.warn('Erreur USB:', e); }
+            }
+            imprimerDepenseFallback(montant, motif, numeroTicket, soldeActuel);
+            return false;
+        }
+
+        function imprimerDepenseFallback(montant, motif, numeroTicket, soldeActuel) {
+            const date = new Date().toLocaleDateString('fr-FR');
+            const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            let ticket = '';
+            ticket += '\n';
+            ticket += '  UNIVERSITE DE LUBUMBASHI\n';
+            ticket += '    FACULTE DES SCIENCES AGRONOMIQUES\n';
+            ticket += '========================================\n';
+            ticket += '          TICKET DE DEPENSE\n';
+            ticket += '========================================\n';
+            ticket += `N° TICKET : ${numeroTicket}\n`;
+            ticket += '----------------------------------------\n';
+            ticket += `MONTANT : ${montant.toLocaleString()} FC\n`;
+            ticket += `MOTIF : ${motif}\n`;
+            ticket += `SOLDE AVANT : ${(soldeActuel + montant).toLocaleString()} FC\n`;
+            ticket += `SOLDE APRES : ${soldeActuel.toLocaleString()} FC\n`;
+            ticket += '----------------------------------------\n';
+            ticket += `DATE : ${date} ${heure}\n`;
+            ticket += `COMPTABLE : ${utilisateurActuel.nomComplet || 'Comptable'}\n`;
+            ticket += '========================================\n';
+            ticket += '        DEPENSE ENREGISTREE\n';
+            ticket += '========================================\n';
+            ticket += '\n\n';
+            const printWindow = window.open('', '_blank', 'width=400,height=600');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Ticket de dépense</title>
+                    <style>body{font-family:'Courier New',monospace;font-size:12px;margin:0;padding:10px;width:80mm;}pre{font-family:'Courier New',monospace;font-size:11px;margin:0;white-space:pre-wrap;}@media print{body{margin:0;padding:0;}}</style>
+                </head>
+                <body><pre>${ticket}</pre>
+                <script>window.onload=function(){window.print();setTimeout(function(){window.close();},1000);};<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+        
         function genererNumeroTicket() {
             const date = new Date();
             const annee = date.getFullYear();
@@ -2450,97 +2418,26 @@
             }
         }
         window.validerDepense = validerDepense;
-
-        async function imprimerDepense(montant, motif, numeroTicket, soldeActuel) {
-            const commands = generateDepenseESCPOS(montant, motif, numeroTicket, soldeActuel);
-            if (printerDevice) {
-                try {
-                    await printerDevice.transferOut(1, commands);
-                    await new Promise(r => setTimeout(r, 100));
-                    showToast('Ticket de dépense imprimé', 'success');
-                    return true;
-                } catch (e) { console.warn('Erreur USB:', e); }
-            }
-            imprimerDepenseFallback(montant, motif, numeroTicket, soldeActuel);
-            return false;
+        
+        // ==================== AUTRES FONCTIONS ====================
+        
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const bgColor = type === 'success' ? '#28a745' : (type === 'warning' ? '#ffc107' : '#dc3545');
+            const textColor = type === 'warning' ? '#333' : 'white';
+            const icon = type === 'success' ? 'check-circle-fill' : (type === 'warning' ? 'exclamation-triangle-fill' : 'x-circle-fill');
+            const toastHtml = `<div class="toast" style="background: ${bgColor}; color: ${textColor}; border-radius: 10px; margin-bottom: 10px; animation: slideInRight 0.3s ease-out;"><div class="toast-body"><i class="bi bi-${icon} me-2"></i>${message}</div></div>`;
+            container.insertAdjacentHTML('afterbegin', toastHtml);
+            setTimeout(() => container.firstElementChild?.remove(), 4000);
         }
-
-        function imprimerDepenseFallback(montant, motif, numeroTicket, soldeActuel) {
-            const date = new Date().toLocaleDateString('fr-FR');
-            const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            let ticket = '';
-            ticket += '\n';
-            ticket += '  UNIVERSITE DE LUBUMBASHI\n';
-            ticket += '    FACULTE DES SCIENCES AGRONOMIQUES\n';
-            ticket += '========================================\n';
-            ticket += '          TICKET DE DEPENSE\n';
-            ticket += '========================================\n';
-            ticket += `N° TICKET : ${numeroTicket}\n`;
-            ticket += '----------------------------------------\n';
-            ticket += `MONTANT : ${montant.toLocaleString()} FC\n`;
-            ticket += `MOTIF : ${motif}\n`;
-            ticket += `SOLDE AVANT : ${(soldeActuel + montant).toLocaleString()} FC\n`;
-            ticket += `SOLDE APRES : ${soldeActuel.toLocaleString()} FC\n`;
-            ticket += '----------------------------------------\n';
-            ticket += `DATE : ${date} ${heure}\n`;
-            ticket += `COMPTABLE : ${utilisateurActuel.nomComplet || 'Comptable'}\n`;
-            ticket += '========================================\n';
-            ticket += '        DEPENSE ENREGISTREE\n';
-            ticket += '========================================\n';
-            ticket += '\n\n';
-            const printWindow = window.open('', '_blank', 'width=400,height=600');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Ticket de dépense</title>
-                    <style>body{font-family:'Courier New',monospace;font-size:12px;margin:0;padding:10px;width:80mm;}pre{font-family:'Courier New',monospace;font-size:11px;margin:0;white-space:pre-wrap;}@media print{body{margin:0;padding:0;}}</style>
-                </head>
-                <body><pre>${ticket}</pre>
-                <script>window.onload=function(){window.print();setTimeout(function(){window.close();},1000);};<\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
+        
+        function escapeHtml(t) { if(!t) return ''; const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+        
+        function numberToWords(number) {
+            if (number === 0) return 'ZERO FRANC';
+            return number.toLocaleString() + ' FRANCS CONGOLAIS';
         }
-
-        async function reimprimerDepense(id) {
-            const depense = allDepenses.find(d => d.id === id);
-            if (!depense) {
-                showToast('Dépense non trouvée', 'error');
-                return;
-            }
-            
-            const soldeActuel = totalEntrees - totalSorties;
-            await imprimerDepense(depense.montant, depense.motif, depense.numeroTicket || depense.id, soldeActuel);
-        }
-        window.reimprimerDepense = reimprimerDepense;
-
-        // ========== FONCTIONS PAIEMENT ==========
-        function reinitialiserFormulairePaiement() {
-            document.getElementById('paiementSuccessMessage').style.display = 'none';
-            document.getElementById('paiementFormulaire').style.display = 'block';
-            currentStudent = null;
-            selectedFiches = [];
-            studentPaidFiches = [];
-            currentFilteredFiches = [];
-            document.getElementById('anneeAcademiqueSelect').value = '';
-            document.getElementById('searchEtudiant').value = '';
-            document.getElementById('searchFiche').value = '';
-            document.getElementById('searchResults').style.display = 'none';
-            document.getElementById('studentInfo').style.display = 'none';
-            document.getElementById('fichesContainer').style.display = 'none';
-            document.getElementById('panierSection').style.display = 'none';
-            document.getElementById('paymentStatusInfo').style.display = 'none';
-            document.getElementById('fichesList').innerHTML = '';
-            document.getElementById('panierItems').innerHTML = '';
-            document.getElementById('totalAmount').innerHTML = '0 Fc';
-            document.getElementById('totalAmountUSD').innerHTML = '';
-            const btn = document.getElementById('validerPaiementBtn');
-            btn.disabled = false;
-            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Valider le paiement';
-        }
-        window.reinitialiserFormulairePaiement = reinitialiserFormulairePaiement;
-
+        
         async function verifierFichesPayees(etudiantId, anneeId) {
             if (!etudiantId || !anneeId) return [];
             try {
@@ -2565,7 +2462,7 @@
                 return [];
             }
         }
-
+        
         async function afficherStatutPaiement(etudiantId, anneeId) {
             const statutDiv = document.getElementById('paymentStatusInfo');
             if (!etudiantId || !anneeId) {
@@ -2590,225 +2487,342 @@
             }
             return fichesPayees || [];
         }
-
+        
+        // Listeners Firestore
+        db.collection('anneesAcademiques').onSnapshot(snapshot => {
+            allAnnees = [];
+            snapshot.forEach(doc => allAnnees.push({ id: doc.id, ...doc.data() }));
+            const anneeSelect = document.getElementById('anneeAcademiqueSelect');
+            const rapportAnnee = document.getElementById('rapportAnneeSelect');
+            if(anneeSelect) {
+                anneeSelect.innerHTML = '<option value="">Sélectionner l\'année</option>';
+                allAnnees.forEach(a => anneeSelect.innerHTML += `<option value="${a.id}">${escapeHtml(a.annee || a.nom)}</option>`);
+            }
+            if(rapportAnnee) {
+                rapportAnnee.innerHTML = '<option value="">Toutes les années</option>';
+                allAnnees.forEach(a => rapportAnnee.innerHTML += `<option value="${a.id}">${escapeHtml(a.annee || a.nom)}</option>`);
+            }
+        });
+        
+        db.collection('promotions').onSnapshot(snapshot => {
+            allPromotions = [];
+            snapshot.forEach(doc => allPromotions.push({ id: doc.id, ...doc.data() }));
+            const rapportPromo = document.getElementById('rapportPromotionSelect');
+            if(rapportPromo) {
+                rapportPromo.innerHTML = '<option value="">Toutes les promotions</option>';
+                allPromotions.forEach(p => rapportPromo.innerHTML += `<option value="${p.id}">${escapeHtml(p.nom)}</option>`);
+            }
+        });
+        
+        db.collection('etudiants').onSnapshot(snapshot => {
+            allStudents = [];
+            snapshot.forEach(doc => allStudents.push({ id: doc.id, ...doc.data() }));
+        });
+        
+        db.collection('fiches').onSnapshot(snapshot => {
+            allFiches = [];
+            snapshot.forEach(doc => allFiches.push({ id: doc.id, ...doc.data() }));
+        });
+        
+        db.collection('transactions').onSnapshot(() => { 
+            mettreAJourStatsHeader();
+            calculerSolde();
+        });
+        
+        db.collection('depenses').onSnapshot(() => {
+            calculerSolde();
+            mettreAJourStatsHeader();
+            chargerDepenses();
+        });
+        
+        function openPage(page) {
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById(`page${page.charAt(0).toUpperCase() + page.slice(1)}`).classList.add('active');
+            if (page === 'rapport') {
+                allTransactionsForRapport = [];
+                filteredTransactionsForRapport = [];
+                document.getElementById('rapportStatsContainer').style.display = 'none';
+                document.getElementById('rapportTableContainer').style.display = 'none';
+                document.getElementById('rapportSearchSection').style.display = 'none';
+                document.getElementById('emptyRapportMessage').style.display = 'block';
+                document.getElementById('dateDebut').value = '';
+                document.getElementById('dateFin').value = '';
+                document.getElementById('rapportAnneeSelect').value = '';
+                document.getElementById('rapportPromotionSelect').value = '';
+                document.getElementById('rapportSearchEtudiant').value = '';
+                document.getElementById('clearRapportSearch').style.display = 'none';
+            } else if (page === 'paiement') {
+                reinitialiserFormulairePaiement();
+            } else if (page === 'depense') {
+                calculerSolde();
+                chargerDepenses();
+            }
+        }
+        
+        function closePage(page) {
+            document.getElementById(`page${page.charAt(0).toUpperCase() + page.slice(1)}`).classList.remove('active');
+            document.getElementById('mainPage').style.display = 'flex';
+        }
+        
+        function reinitialiserFormulairePaiement() {
+            document.getElementById('paiementSuccessMessage').style.display = 'none';
+            document.getElementById('paiementFormulaire').style.display = 'block';
+            currentStudent = null;
+            selectedFiches = [];
+            studentPaidFiches = [];
+            currentFilteredFiches = [];
+            document.getElementById('anneeAcademiqueSelect').value = '';
+            document.getElementById('searchEtudiant').value = '';
+            document.getElementById('searchFiche').value = '';
+            document.getElementById('searchResults').style.display = 'none';
+            document.getElementById('studentInfo').style.display = 'none';
+            document.getElementById('fichesContainer').style.display = 'none';
+            document.getElementById('panierSection').style.display = 'none';
+            document.getElementById('paymentStatusInfo').style.display = 'none';
+            document.getElementById('fichesList').innerHTML = '';
+            document.getElementById('panierItems').innerHTML = '';
+            document.getElementById('totalAmount').innerHTML = '0 Fc';
+            document.getElementById('totalAmountUSD').innerHTML = '';
+            const btn = document.getElementById('validerPaiementBtn');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Valider le paiement';
+        }
+        window.reinitialiserFormulairePaiement = reinitialiserFormulairePaiement;
+        
+        const searchInput = document.getElementById('searchEtudiant');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.trim();
+                if (searchTerm.length < 2) { 
+                    document.getElementById('searchResults').style.display = 'none'; 
+                    return; 
+                }
+                setTimeout(() => {
+                    const results = allStudents.filter(student => student.nom && student.nom.toLowerCase().includes(searchTerm.toLowerCase()));
+                    const resultsDiv = document.getElementById('searchResults');
+                    if (results.length > 0) {
+                        resultsDiv.innerHTML = results.map(student => {
+                            const promoNom = getPromotionNom(student.promotion);
+                            return `<div class="search-result-item" onclick="selectionnerEtudiant('${student.id}', '${escapeHtml(student.nom)}', '${student.promotion || ''}')"><i class="bi bi-person-circle"></i> <strong>${escapeHtml(student.nom)}</strong><br><small>${student.matricule || student.id} - ${escapeHtml(promoNom)}</small></div>`;
+                        }).join('');
+                        resultsDiv.style.display = 'block';
+                    } else {
+                        resultsDiv.innerHTML = '<div class="search-result-item">Aucun étudiant trouvé</div>';
+                        resultsDiv.style.display = 'block';
+                    }
+                }, 300);
+            });
+        }
+        
+        window.selectionnerEtudiant = async function(id, nom, promotionId) {
+            const anneeId = document.getElementById('anneeAcademiqueSelect').value;
+            if (!anneeId) {
+                showToast('Veuillez d\'abord sélectionner l\'année académique', 'warning');
+                return;
+            }
+            currentStudent = { id: id, nomComplet: nom.toUpperCase(), promotion: promotionId || '' };
+            document.getElementById('searchResults').style.display = 'none';
+            document.getElementById('searchEtudiant').value = nom;
+            document.getElementById('studentInfo').style.display = 'block';
+            const promoNom = getPromotionNom(promotionId);
+            document.getElementById('studentDetails').innerHTML = `<i class="bi bi-person-badge"></i> <strong>${escapeHtml(nom)}</strong><br><i class="bi bi-mortarboard-fill"></i> Promotion: <span class="promotion-badge">${escapeHtml(promoNom)}</span><br><i class="bi bi-file-text"></i> Matricule: ${escapeHtml(id)}`;
+            studentPaidFiches = await afficherStatutPaiement(id, anneeId);
+            chargerFichesEtudiant(promotionId, anneeId);
+        }
+        
         function getPromotionNom(promotionId) {
             if (!promotionId) return 'Non définie';
             const promo = allPromotions.find(p => p.id === promotionId);
             return promo ? promo.nom : promotionId;
         }
-
-        // ========== ÉCOUTEURS FIRESTORE OPTIMISÉS ==========
-        // Chargement initial rapide avec get() au lieu de onSnapshot
-        async function chargerDonneesInitiales() {
-            try {
-                // Charger toutes les collections en parallèle
-                const [anneesSnap, promotionsSnap, etudiantsSnap, fichesSnap, transactionsSnap, depensesSnap] = await Promise.all([
-                    db.collection('anneesAcademiques').get(),
-                    db.collection('promotions').get(),
-                    db.collection('etudiants').get(),
-                    db.collection('fiches').get(),
-                    db.collection('transactions').get(),
-                    db.collection('depenses').get()
-                ]);
-                
-                // Traiter les années
-                allAnnees = [];
-                anneesSnap.forEach(doc => allAnnees.push({ id: doc.id, ...doc.data() }));
-                const anneeSelect = document.getElementById('anneeAcademiqueSelect');
-                const rapportAnnee = document.getElementById('rapportAnneeSelect');
-                if(anneeSelect) {
-                    anneeSelect.innerHTML = '<option value="">Sélectionner l\'année</option>';
-                    allAnnees.forEach(a => anneeSelect.innerHTML += `<option value="${a.id}">${escapeHtml(a.annee || a.nom)}</option>`);
-                }
-                if(rapportAnnee) {
-                    rapportAnnee.innerHTML = '<option value="">Toutes les années</option>';
-                    allAnnees.forEach(a => rapportAnnee.innerHTML += `<option value="${a.id}">${escapeHtml(a.annee || a.nom)}</option>`);
-                }
-                
-                // Traiter les promotions
-                allPromotions = [];
-                promotionsSnap.forEach(doc => allPromotions.push({ id: doc.id, ...doc.data() }));
-                const rapportPromo = document.getElementById('rapportPromotionSelect');
-                if(rapportPromo) {
-                    rapportPromo.innerHTML = '<option value="">Toutes les promotions</option>';
-                    allPromotions.forEach(p => rapportPromo.innerHTML += `<option value="${p.id}">${escapeHtml(p.nom)}</option>`);
-                }
-                
-                // Traiter les étudiants
-                allStudents = [];
-                etudiantsSnap.forEach(doc => allStudents.push({ id: doc.id, ...doc.data() }));
-                
-                // Traiter les fiches
-                allFiches = [];
-                fichesSnap.forEach(doc => allFiches.push({ id: doc.id, ...doc.data() }));
-                
-                // Traiter les transactions
-                allTransactionsForRapport = [];
-                transactionsSnap.forEach(doc => {
-                    const data = doc.data();
-                    allTransactionsForRapport.push({ id: doc.id, ...data });
-                });
-                
-                // Traiter les dépenses
-                allDepenses = [];
-                totalSorties = 0;
-                depensesSnap.forEach(doc => {
-                    const data = doc.data();
-                    totalSorties += data.montant || 0;
-                    allDepenses.push({ id: doc.id, ...data });
-                });
-                
-                // Calculer total entrées
-                totalEntrees = 0;
-                allTransactionsForRapport.forEach(t => {
-                    if (t.isDuplicata) {
-                        totalEntrees += t.dernierFraisDuplicata || t.duplicataFrais || 0;
-                    } else {
-                        totalEntrees += t.montantTotal || 0;
+        
+        function chargerFichesEtudiant(promotionId, anneeId) {
+            if (!promotionId) { 
+                document.getElementById('fichesContainer').style.display = 'none'; 
+                showToast('Cet étudiant n\'a pas de promotion assignée', 'warning'); 
+                return; 
+            }
+            currentFilteredFiches = allFiches.filter(fiche => {
+                if (studentPaidFiches.includes(fiche.id)) return false;
+                if (fiche.promotions && Array.isArray(fiche.promotions)) return fiche.promotions.includes(promotionId);
+                else if (fiche.promotion) return fiche.promotion === promotionId;
+                return false;
+            });
+            document.getElementById('fichesContainer').style.display = 'block';
+            document.getElementById('fichesList').innerHTML = '<div class="info-banner"><i class="bi bi-search"></i> Commencez à taper pour rechercher une fiche</div>';
+            selectedFiches = [];
+            updatePanier();
+            updateTotal();
+            const searchFicheInput = document.getElementById('searchFiche');
+            if (searchFicheInput) {
+                searchFicheInput.value = '';
+                searchFicheInput.oninput = function() {
+                    const term = this.value.toLowerCase().trim();
+                    const fichesListDiv = document.getElementById('fichesList');
+                    if (term.length === 0) {
+                        fichesListDiv.innerHTML = '<div class="info-banner"><i class="bi bi-search"></i> Commencez à taper pour rechercher une fiche</div>';
+                        return;
                     }
-                });
-                
-                // Mettre à jour l'affichage
-                chargerDepenses();
-                mettreAJourStatsHeader();
-                calculerSolde();
-                
-                dataLoaded = true;
-                console.log('✅ Données chargées avec succès');
-                
-            } catch (error) {
-                console.error('Erreur chargement données:', error);
-                showToast('Erreur de chargement des données', 'error');
+                    const filtered = currentFilteredFiches.filter(fiche => 
+                        fiche.nom.toLowerCase().includes(term) || 
+                        (fiche.description && fiche.description.toLowerCase().includes(term))
+                    );
+                    if (filtered.length > 0) {
+                        fichesListDiv.innerHTML = filtered.map(fiche => {
+                            const isSelected = selectedFiches.some(f => f.id === fiche.id);
+                            const montantFC = fiche.montant || 0;
+                            const dual = formaterMontantDual(montantFC);
+                            return `<div class="fiche-item ${isSelected ? 'selected' : ''}" onclick="toggleFiche('${fiche.id}', ${montantFC}, '${escapeHtml(fiche.nom)}')">
+                                <div>
+                                    <strong>${escapeHtml(fiche.nom)}</strong><br>
+                                    <small>${escapeHtml(fiche.description || '')}</small>
+                                </div>
+                                <div>
+                                    <span class="fiche-price">${dual.fc}</span>
+                                    <div style="font-size: 11px; color: ${isSelected ? '#ffb347' : '#999'};">${dual.usd}</div>
+                                </div>
+                            </div>`;
+                        }).join('');
+                    } else {
+                        fichesListDiv.innerHTML = '<div class="no-results">Aucune fiche trouvée</div>';
+                    }
+                };
             }
         }
-
-        // ⭐ Écouteurs en temps réel avec mise à jour incrémentale
-        function setupRealtimeListeners() {
-            // Écouter les changements sur les transactions
-            db.collection('transactions').onSnapshot((snapshot) => {
-                if (dataLoaded) {
-                    // Mise à jour incrémentale
-                    snapshot.docChanges().forEach(change => {
-                        if (change.type === 'added') {
-                            allTransactionsForRapport.push({ id: change.doc.id, ...change.doc.data() });
-                        } else if (change.type === 'modified') {
-                            const index = allTransactionsForRapport.findIndex(t => t.id === change.doc.id);
-                            if (index !== -1) {
-                                allTransactionsForRapport[index] = { id: change.doc.id, ...change.doc.data() };
-                            }
-                        } else if (change.type === 'removed') {
-                            allTransactionsForRapport = allTransactionsForRapport.filter(t => t.id !== change.doc.id);
-                        }
-                    });
-                    
-                    // Recalculer les totaux
-                    totalEntrees = 0;
-                    allTransactionsForRapport.forEach(t => {
-                        if (t.isDuplicata) {
-                            totalEntrees += t.dernierFraisDuplicata || t.duplicataFrais || 0;
-                        } else {
-                            totalEntrees += t.montantTotal || 0;
-                        }
-                    });
-                    
-                    mettreAJourStatsHeader();
-                    calculerSolde();
-                }
-            });
-
-            // Écouter les changements sur les dépenses
-            db.collection('depenses').onSnapshot((snapshot) => {
-                if (dataLoaded) {
-                    snapshot.docChanges().forEach(change => {
-                        if (change.type === 'added') {
-                            const data = change.doc.data();
-                            allDepenses.push({ id: change.doc.id, ...data });
-                            totalSorties += data.montant || 0;
-                        } else if (change.type === 'modified') {
-                            const index = allDepenses.findIndex(d => d.id === change.doc.id);
-                            if (index !== -1) {
-                                const oldMontant = allDepenses[index].montant || 0;
-                                const newMontant = change.doc.data().montant || 0;
-                                totalSorties = totalSorties - oldMontant + newMontant;
-                                allDepenses[index] = { id: change.doc.id, ...change.doc.data() };
-                            }
-                        } else if (change.type === 'removed') {
-                            const index = allDepenses.findIndex(d => d.id === change.doc.id);
-                            if (index !== -1) {
-                                totalSorties -= allDepenses[index].montant || 0;
-                                allDepenses.splice(index, 1);
-                            }
-                        }
-                    });
-                    
-                    chargerDepenses();
-                    calculerSolde();
-                }
-            });
-
-            // Écouter les changements sur les étudiants
-            db.collection('etudiants').onSnapshot((snapshot) => {
-                if (dataLoaded) {
-                    allStudents = [];
-                    snapshot.forEach(doc => allStudents.push({ id: doc.id, ...doc.data() }));
-                }
-            });
-
-            // Écouter les changements sur les fiches
-            db.collection('fiches').onSnapshot((snapshot) => {
-                if (dataLoaded) {
-                    allFiches = [];
-                    snapshot.forEach(doc => allFiches.push({ id: doc.id, ...doc.data() }));
-                }
-            });
-
-            // Écouter les changements sur les années
-            db.collection('anneesAcademiques').onSnapshot((snapshot) => {
-                if (dataLoaded) {
-                    allAnnees = [];
-                    snapshot.forEach(doc => allAnnees.push({ id: doc.id, ...doc.data() }));
-                    const anneeSelect = document.getElementById('anneeAcademiqueSelect');
-                    const rapportAnnee = document.getElementById('rapportAnneeSelect');
-                    if(anneeSelect) {
-                        const currentVal = anneeSelect.value;
-                        anneeSelect.innerHTML = '<option value="">Sélectionner l\'année</option>';
-                        allAnnees.forEach(a => anneeSelect.innerHTML += `<option value="${a.id}">${escapeHtml(a.annee || a.nom)}</option>`);
-                        if (currentVal) anneeSelect.value = currentVal;
-                    }
-                    if(rapportAnnee) {
-                        const currentVal = rapportAnnee.value;
-                        rapportAnnee.innerHTML = '<option value="">Toutes les années</option>';
-                        allAnnees.forEach(a => rapportAnnee.innerHTML += `<option value="${a.id}">${escapeHtml(a.annee || a.nom)}</option>`);
-                        if (currentVal) rapportAnnee.value = currentVal;
-                    }
-                }
-            });
-
-            // Écouter les changements sur les promotions
-            db.collection('promotions').onSnapshot((snapshot) => {
-                if (dataLoaded) {
-                    allPromotions = [];
-                    snapshot.forEach(doc => allPromotions.push({ id: doc.id, ...doc.data() }));
-                    const rapportPromo = document.getElementById('rapportPromotionSelect');
-                    if(rapportPromo) {
-                        const currentVal = rapportPromo.value;
-                        rapportPromo.innerHTML = '<option value="">Toutes les promotions</option>';
-                        allPromotions.forEach(p => rapportPromo.innerHTML += `<option value="${p.id}">${escapeHtml(p.nom)}</option>`);
-                        if (currentVal) rapportPromo.value = currentVal;
-                    }
-                }
-            });
+        
+        window.toggleFiche = function(ficheId, prix, nom) {
+            const index = selectedFiches.findIndex(f => f.id === ficheId);
+            if (index === -1) {
+                selectedFiches.push({ id: ficheId, prix: parseFloat(prix), nom: nom });
+            } else {
+                selectedFiches.splice(index, 1);
+            }
+            const term = document.getElementById('searchFiche').value.toLowerCase().trim();
+            if (term) {
+                document.getElementById('searchFiche').dispatchEvent(new Event('input'));
+            }
+            updatePanier();
+            updateTotal();
         }
-
-        // ========== FONCTIONS RAPPORT ==========
+        
+        function updatePanier() {
+            const panierSection = document.getElementById('panierSection');
+            const panierItems = document.getElementById('panierItems');
+            const panierCount = document.getElementById('panierCount');
+            if (selectedFiches.length === 0) {
+                panierSection.style.display = 'none';
+                return;
+            }
+            panierSection.style.display = 'block';
+            panierCount.textContent = selectedFiches.length;
+            panierItems.innerHTML = selectedFiches.map(fiche => {
+                const dual = formaterMontantDual(fiche.prix);
+                return `
+                <div class="panier-item">
+                    <div class="panier-item-name"><i class="bi bi-file-text"></i><span>${escapeHtml(fiche.nom || 'Fiche')}</span></div>
+                    <div>
+                        <span style="font-weight: bold; margin-right: 15px;">${dual.fc}</span>
+                        <span style="font-size: 12px; color: #999; margin-right: 10px;">${dual.usd}</span>
+                        <button class="btn-remove-panier" onclick="retirerDuPanier('${fiche.id}')"><i class="bi bi-x-circle"></i></button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        
+        window.retirerDuPanier = function(ficheId) {
+            selectedFiches = selectedFiches.filter(f => f.id !== ficheId);
+            updatePanier();
+            updateTotal();
+            const term = document.getElementById('searchFiche').value.toLowerCase().trim();
+            if (term) {
+                document.getElementById('searchFiche').dispatchEvent(new Event('input'));
+            }
+        }
+        
+        function updateTotal() { 
+            const total = selectedFiches.reduce((sum, f) => sum + (parseFloat(f.prix) || 0), 0);
+            const dual = formaterMontantDual(total);
+            
+            document.getElementById('totalAmount').innerHTML = dual.fc;
+            
+            const usdEl = document.getElementById('totalAmountUSD');
+            if (usdEl) {
+                if (deviseActuelle === 'FC') {
+                    usdEl.innerHTML = `(${dual.usd})`;
+                    usdEl.style.display = 'block';
+                } else {
+                    usdEl.innerHTML = '';
+                    usdEl.style.display = 'none';
+                }
+            }
+        }
+        
+        function genererNumeroRecu() {
+            return Math.floor(Math.random() * 900) + 100 + '-' + Math.floor(Math.random() * 900) + 100;
+        }
+        
+        async function validerPaiement() {
+            if (!currentStudent) { showToast('Sélectionnez un étudiant', 'warning'); return; }
+            if (selectedFiches.length === 0) { showToast('Sélectionnez au moins une fiche', 'warning'); return; }
+            const anneeId = document.getElementById('anneeAcademiqueSelect').value;
+            if (!anneeId) { showToast('Sélectionnez l\'année académique', 'warning'); return; }
+            const total = selectedFiches.reduce((sum, f) => sum + f.prix, 0);
+            let numeroRecu = genererNumeroRecu();
+            const anneeNom = allAnnees.find(a => a.id === anneeId)?.annee || '-';
+            const promoNom = getPromotionNom(currentStudent.promotion).toUpperCase();
+            const fichesDetails = selectedFiches.map(f => ({ id: f.id, ...allFiches.find(fiche => fiche.id === f.id), prix: f.prix }));
+            const montantLettres = numberToWords(total);
+            const transaction = {
+                id: numeroRecu,
+                numeroRecu: numeroRecu,
+                etudiantId: currentStudent.id,
+                etudiantNom: currentStudent.nomComplet,
+                etudiantMatricule: currentStudent.id,
+                promotion: currentStudent.promotion,
+                promotionNom: promoNom,
+                anneeAcademiqueId: anneeId,
+                anneeAcademiqueNom: anneeNom,
+                fiches: fichesDetails,
+                montantTotal: total,
+                montantLettres: montantLettres,
+                date: firebase.firestore.FieldValue.serverTimestamp(),
+                comptable: utilisateurActuel.nomComplet.toUpperCase(),
+                comptableId: utilisateurActuel.id,
+                isDuplicata: false,
+                duplicataFrais: 0,
+                dernierFraisDuplicata: 0,
+                nombreDuplicatas: 0
+            };
+            const btn = document.getElementById('validerPaiementBtn');
+            btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Traitement...';
+            btn.disabled = true;
+            try {
+                await db.collection('transactions').doc(numeroRecu).set(transaction);
+                showToast('Paiement enregistré!', 'success');
+                imprimerAF250(transaction, fichesDetails, total, anneeNom, promoNom, montantLettres, numeroRecu, false, 0).catch(e => console.warn("Impression:", e));
+                mettreAJourStatsHeader();
+                const dual = formaterMontantDual(total);
+                document.getElementById('successDetails').innerHTML = `<strong>Étudiant:</strong> ${escapeHtml(currentStudent.nomComplet)}<br><strong>Montant:</strong> ${dual.hybride}<br><strong>N° Reçu:</strong> ${numeroRecu}`;
+                document.getElementById('paiementFormulaire').style.display = 'none';
+                document.getElementById('paiementSuccessMessage').style.display = 'block';
+            } catch (error) { 
+                showToast('Erreur: ' + error.message, 'error');
+                btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Valider le paiement'; 
+                btn.disabled = false; 
+            }
+        }
+        
+        document.getElementById('validerPaiementBtn').onclick = validerPaiement;
+        
         async function genererRapport() {
             const anneeId = document.getElementById('rapportAnneeSelect').value;
             const promotionId = document.getElementById('rapportPromotionSelect').value;
             const dateDebut = document.getElementById('dateDebut').value;
             const dateFin = document.getElementById('dateFin').value;
-            
-            let transactions = [...allTransactionsForRapport];
-            
+            let query = db.collection('transactions').orderBy('date', 'desc');
+            const snapshot = await query.get();
+            let transactions = [];
+            snapshot.forEach(doc => transactions.push({ id: doc.id, ...doc.data() }));
             if (anneeId) transactions = transactions.filter(t => t.anneeAcademiqueId === anneeId);
             if (promotionId) transactions = transactions.filter(t => t.promotion === promotionId);
             if (dateDebut) {
@@ -2819,7 +2833,7 @@
                 const fin = new Date(dateFin); fin.setHours(23,59,59,999);
                 transactions = transactions.filter(t => t.date && t.date.toDate() <= fin);
             }
-            
+            allTransactionsForRapport = transactions;
             if (transactions.length === 0) {
                 document.getElementById('rapportStatsContainer').style.display = 'none';
                 document.getElementById('rapportTableContainer').style.display = 'none';
@@ -2827,7 +2841,6 @@
                 document.getElementById('emptyRapportMessage').style.display = 'block';
                 return;
             }
-            
             document.getElementById('emptyRapportMessage').style.display = 'none';
             document.getElementById('rapportStatsContainer').style.display = 'block';
             document.getElementById('rapportTableContainer').style.display = 'block';
@@ -2855,11 +2868,26 @@
             document.getElementById('totalDuplicatas').innerHTML = nombreDuplicatas;
             document.getElementById('totalDuplicataMontant').innerHTML = formaterMontant(totalDuplicataMontant);
             
-            // Afficher les transactions
+            filterRapportBySearch('');
+        }
+        
+        function filterRapportBySearch(term) {
+            if (!term) {
+                filteredTransactionsForRapport = [...allTransactionsForRapport];
+                document.getElementById('clearRapportSearch').style.display = 'none';
+            } else {
+                const t = term.toLowerCase();
+                filteredTransactionsForRapport = allTransactionsForRapport.filter(tr => 
+                    (tr.etudiantNom && tr.etudiantNom.toLowerCase().includes(t)) ||
+                    (tr.numeroRecu && tr.numeroRecu.includes(t))
+                );
+                document.getElementById('clearRapportSearch').style.display = 'inline-block';
+            }
             const tbody = document.getElementById('rapportTableBody');
-            tbody.innerHTML = transactions.map(t => {
+            tbody.innerHTML = filteredTransactionsForRapport.map(t => {
                 const dateStr = t.date ? new Date(t.date.toDate()).toLocaleDateString('fr-FR') : '-';
                 const montantTotal = t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0);
+                const fichesNoms = t.fiches?.map(f => f.nom).join(', ') || '-';
                 const fichesDetailHtml = t.fiches?.map(f => {
                     if (t.isDuplicata) {
                         return `<span class="fiche-detail-badge">${escapeHtml(f.nom || 'Fiche')} : ${formaterMontant(f.prix || 0)} (payé) + 10 000 FC frais duplicata</span>`;
@@ -2889,289 +2917,7 @@
                 </tr>`;
             }).join('');
         }
-
-        function clearRapportSearch() {
-            document.getElementById('rapportSearchEtudiant').value = '';
-            // Re-afficher toutes les transactions
-            const term = '';
-            const tbody = document.getElementById('rapportTableBody');
-            if (allTransactionsForRapport.length > 0) {
-                genererRapport();
-            }
-            document.getElementById('clearRapportSearch').style.display = 'none';
-        }
-        window.clearRapportSearch = clearRapportSearch;
-
-        // Recherche dans le rapport
-        document.getElementById('rapportSearchEtudiant').addEventListener('input', function() {
-            const term = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#rapportTableBody tr');
-            let visibleCount = 0;
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                if (text.includes(term) || term === '') {
-                    row.style.display = '';
-                    visibleCount++;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-            
-            document.getElementById('clearRapportSearch').style.display = term ? 'inline-block' : 'none';
-            document.getElementById('searchResultCount').innerHTML = 
-                term ? `<i class="bi bi-search"></i> ${visibleCount} résultat(s) trouvé(s)` : 
-                `<i class="bi bi-info-circle"></i> Affiche toutes les transactions`;
-        });
-
-        function exporterExcel() {
-            if (!allTransactionsForRapport.length) { showToast('Aucune donnée', 'warning'); return; }
-            
-            // Utiliser les transactions filtrées par la recherche
-            let transactions = [];
-            const rows = document.querySelectorAll('#rapportTableBody tr');
-            rows.forEach(row => {
-                if (row.style.display !== 'none') {
-                    // Récupérer les données de la ligne
-                    const cells = row.querySelectorAll('td');
-                    if (cells.length > 0) {
-                        const date = cells[0]?.textContent || '-';
-                        const numero = cells[1]?.textContent || '-';
-                        const etudiant = cells[2]?.textContent || '-';
-                        const promotion = cells[3]?.textContent || '-';
-                        const annee = cells[4]?.textContent || '-';
-                        const nbFiches = parseInt(cells[5]?.textContent) || 0;
-                        const detail = cells[6]?.textContent || '-';
-                        const montant = cells[7]?.textContent || '0 FC';
-                        const type = cells[8]?.textContent || '-';
-                        
-                        transactions.push({
-                            'Date': date,
-                            'N° Reçu': numero,
-                            'Type': type,
-                            'Étudiant': etudiant,
-                            'Promotion': promotion,
-                            'Année': annee,
-                            'Fiches': nbFiches,
-                            'Détail': detail,
-                            'Montant': montant
-                        });
-                    }
-                }
-            });
-            
-            if (transactions.length === 0) {
-                showToast('Aucune donnée à exporter', 'warning');
-                return;
-            }
-            
-            const ws = XLSX.utils.json_to_sheet(transactions);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Rapport');
-            XLSX.writeFile(wb, `rapport_${new Date().toISOString().split('T')[0]}.xlsx`);
-            showToast('Export Excel réussi', 'success');
-        }
-        window.exporterExcel = exporterExcel;
-
-        function exporterPDF() {
-            const rows = document.querySelectorAll('#rapportTableBody tr');
-            let transactions = [];
-            rows.forEach(row => {
-                if (row.style.display !== 'none') {
-                    const cells = row.querySelectorAll('td');
-                    if (cells.length > 0) {
-                        transactions.push([
-                            cells[0]?.textContent || '-',
-                            cells[1]?.textContent || '-',
-                            cells[2]?.textContent || '-',
-                            cells[3]?.textContent || '-',
-                            cells[4]?.textContent || '-',
-                            cells[5]?.textContent || '-',
-                            cells[7]?.textContent || '0 FC'
-                        ]);
-                    }
-                }
-            });
-            
-            if (transactions.length === 0) {
-                showToast('Aucune donnée à exporter', 'warning');
-                return;
-            }
-            
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({ orientation: 'landscape' });
-            doc.autoTable({
-                head: [['Date', 'N° Reçu', 'Étudiant', 'Promotion', 'Année', 'Fiches', 'Montant']],
-                body: transactions,
-                theme: 'striped'
-            });
-            doc.save(`rapport_${new Date().toISOString().split('T')[0]}.pdf`);
-            showToast('Export PDF réussi', 'success');
-        }
-        window.exporterPDF = exporterPDF;
-
-        async function imprimerRapport() {
-            const rows = document.querySelectorAll('#rapportTableBody tr');
-            let transactions = [];
-            rows.forEach(row => {
-                if (row.style.display !== 'none') {
-                    const cells = row.querySelectorAll('td');
-                    if (cells.length > 0) {
-                        transactions.push({
-                            date: cells[0]?.textContent || '-',
-                            numero: cells[1]?.textContent || '-',
-                            etudiant: cells[2]?.textContent || '-',
-                            promotion: cells[3]?.textContent || '-',
-                            annee: cells[4]?.textContent || '-',
-                            fiches: cells[5]?.textContent || '0',
-                            detail: cells[6]?.textContent || '-',
-                            montant: cells[7]?.textContent || '0 FC',
-                            type: cells[8]?.textContent || '-'
-                        });
-                    }
-                }
-            });
-            
-            if (transactions.length === 0) {
-                showToast('Aucune donnée à imprimer', 'warning');
-                return;
-            }
-            
-            // Calculer les stats
-            let totalMontant = 0;
-            let totalDuplicataMontant = 0;
-            let nombreDuplicatas = 0;
-            
-            allTransactionsForRapport.forEach(t => {
-                if (t.isDuplicata) {
-                    const montantDuplicata = t.dernierFraisDuplicata || t.duplicataFrais || 0;
-                    totalDuplicataMontant += montantDuplicata;
-                    nombreDuplicatas++;
-                    totalMontant += montantDuplicata;
-                } else {
-                    totalMontant += (t.montantTotal || 0);
-                }
-            });
-            
-            const stats = {
-                totalMontant: totalMontant,
-                totalTransactions: allTransactionsForRapport.length,
-                totalEtudiants: new Set(allTransactionsForRapport.map(t => t.etudiantId)).size
-            };
-            
-            const duplicataStats = {
-                nombre: nombreDuplicatas,
-                montant: totalDuplicataMontant
-            };
-            
-            const filtres = [];
-            const anneeId = document.getElementById('rapportAnneeSelect').value;
-            const promotionId = document.getElementById('rapportPromotionSelect').value;
-            const dateDebut = document.getElementById('dateDebut').value;
-            const dateFin = document.getElementById('dateFin').value;
-            
-            if (anneeId) filtres.push('Année');
-            if (promotionId) filtres.push('Promotion');
-            if (dateDebut || dateFin) filtres.push('Dates');
-            
-            const filtresStr = filtres.length > 0 ? filtres.join(', ') : 'Aucun';
-            
-            // Utiliser le générateur de rapport ESC/POS
-            const commands = generateRapportESCPOS(allTransactionsForRapport, stats, filtresStr, duplicataStats);
-            if (printerDevice) {
-                try {
-                    await printerDevice.transferOut(1, commands);
-                    await new Promise(r => setTimeout(r, 100));
-                    showToast('Rapport imprimé avec succès', 'success');
-                    return;
-                } catch (e) { console.warn('Erreur USB:', e); }
-            }
-            
-            // Fallback : impression dans une nouvelle fenêtre
-            imprimerRapportFallback(allTransactionsForRapport, stats, filtresStr, duplicataStats);
-        }
-        window.imprimerRapport = imprimerRapport;
-
-        function imprimerRapportFallback(transactions, stats, filtres, duplicataStats) {
-            const date = new Date().toLocaleDateString('fr-FR');
-            const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            
-            // Calcul des stats par fiche
-            const fichesStats = {};
-            transactions.forEach(t => {
-                if (t.isDuplicata) {
-                    const fraisDuplicata = t.dernierFraisDuplicata || t.duplicataFrais || 0;
-                    const nomFiche = 'Frais de duplicata (10 000 FC)';
-                    if (!fichesStats[nomFiche]) {
-                        fichesStats[nomFiche] = { count: 0, total: 0 };
-                    }
-                    fichesStats[nomFiche].count++;
-                    fichesStats[nomFiche].total += fraisDuplicata;
-                    return;
-                }
-                
-                if (t.fiches && Array.isArray(t.fiches)) {
-                    t.fiches.forEach(fiche => {
-                        const nomFiche = fiche.nom || 'Fiche inconnue';
-                        if (!fichesStats[nomFiche]) {
-                            fichesStats[nomFiche] = { count: 0, total: 0 };
-                        }
-                        fichesStats[nomFiche].count++;
-                        fichesStats[nomFiche].total += (fiche.prix || 0);
-                    });
-                }
-            });
-            
-            let ticket = '';
-            ticket += '\n';
-            ticket += '  UNIVERSITE DE LUBUMBASHI\n';
-            ticket += '    FACULTE DES SCIENCES AGRONOMIQUES\n';
-            ticket += '========================================\n';
-            ticket += '       RAPPORT DE TRANSACTIONS\n';
-            ticket += '========================================\n';
-            ticket += `DATE : ${date} ${heure}\n`;
-            if (filtres) ticket += `FILTRES : ${filtres}\n`;
-            ticket += '----------------------------------------\n';
-            ticket += `TOTAL COLLECTE : ${stats.totalMontant.toLocaleString()} FC\n`;
-            ticket += `NB TRANSACTIONS : ${stats.totalTransactions}\n`;
-            ticket += `NB ETUDIANTS : ${stats.totalEtudiants}\n`;
-            ticket += `DUPLICATAS SERVIS : ${duplicataStats.nombre}\n`;
-            ticket += `MONTANT DUPLICATAS : ${duplicataStats.montant.toLocaleString()} FC\n`;
-            ticket += '----------------------------------------\n';
-            
-            if (Object.keys(fichesStats).length > 0) {
-                ticket += '========================================\n';
-                ticket += '        DETAIL PAR FICHE\n';
-                ticket += '----------------------------------------\n';
-                ticket += 'FICHE          NB ETUD.    MONTANT\n';
-                ticket += '----------------------------------------\n';
-                for (const [nomFiche, statsFiche] of Object.entries(fichesStats)) {
-                    const nomTronque = nomFiche.length > 24 ? nomFiche.substring(0, 24) + '...' : nomFiche;
-                    ticket += `${nomTronque}  ${statsFiche.count} etud.   ${statsFiche.total.toLocaleString()} FC\n`;
-                }
-            }
-            
-            ticket += '========================================\n';
-            ticket += '          FIN DU RAPPORT\n';
-            ticket += '========================================\n';
-            ticket += '\n\n';
-            
-            const printWindow = window.open('', '_blank', 'width=400,height=600');
-            printWindow.document.write(`
-                <html>
-                <head>
-                    <title>Rapport de transactions</title>
-                    <style>body{font-family:'Courier New',monospace;font-size:12px;margin:0;padding:10px;width:80mm;}pre{font-family:'Courier New',monospace;font-size:11px;margin:0;white-space:pre-wrap;}@media print{body{margin:0;padding:0;}}</style>
-                </head>
-                <body><pre>${ticket}</pre>
-                <script>window.onload=function(){window.print();setTimeout(function(){window.close();},1000);};<\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-        }
-
-        // ========== FONCTIONS DUPLICATA ==========
+        
         window.reimprimer = async function(id) {
             const doc = await db.collection('transactions').doc(id).get();
             if (doc.exists) {
@@ -3192,8 +2938,8 @@
                     0
                 );
             }
-        };
-
+        }
+        
         window.genererDuplicata = async function(id) {
             try {
                 const doc = await db.collection('transactions').doc(id).get();
@@ -3207,7 +2953,7 @@
                 duplicataEnCours = {
                     id: id,
                     transaction: transaction,
-                    fraisDuplicata: 10000
+                    fraisDuplicata: 10000 // 10 000 FC par transaction
                 };
                 
                 const infoDiv = document.getElementById('duplicataTransactionInfo');
@@ -3309,6 +3055,7 @@
             btnFinaliser.innerHTML = '<i class="bi bi-hourglass-split"></i> Traitement en cours...';
             
             try {
+                // Créer une nouvelle transaction pour le duplicata
                 const duplicataNumero = `${transaction.numeroRecu || id}-DUP`;
                 const duplicataTransaction = {
                     id: duplicataNumero,
@@ -3320,6 +3067,7 @@
                     promotionNom: transaction.promotionNom,
                     anneeAcademiqueId: transaction.anneeAcademiqueId,
                     anneeAcademiqueNom: transaction.anneeAcademiqueNom,
+                    // ⭐⭐⭐ CORRECTION : Les fiches sont conservées pour l'information, mais ne seront pas comptées dans le détail ⭐⭐⭐
                     fiches: transaction.fiches || [],
                     montantTotal: transaction.montantTotal || 0,
                     montantLettres: transaction.montantLettres || '',
@@ -3334,8 +3082,10 @@
                     numeroRecuOriginal: transaction.numeroRecu || id
                 };
                 
+                // Ajouter la transaction duplicata
                 await db.collection('transactions').doc(duplicataNumero).set(duplicataTransaction);
                 
+                // Mettre à jour la transaction originale
                 await db.collection('transactions').doc(id).update({
                     nombreDuplicatas: firebase.firestore.FieldValue.increment(1),
                     dernierFraisDuplicata: fraisDuplicata
@@ -3346,6 +3096,7 @@
                 const fraisFormatted = formaterMontantDual(fraisDuplicata);
                 showToast(`Duplicata généré : ${fraisFormatted.hybride} (frais de duplicata)`, 'success');
                 
+                // Imprimer le duplicata
                 await imprimerAF250(
                     { 
                         etudiantNom: transaction.etudiantNom, 
@@ -3391,268 +3142,254 @@
             });
         });
 
-        // ========== FILTRES DÉPENSES ==========
+        function clearRapportSearch() {
+            document.getElementById('rapportSearchEtudiant').value = '';
+            filterRapportBySearch('');
+        }
+        
+        document.getElementById('rapportSearchEtudiant').addEventListener('input', function() {
+            filterRapportBySearch(this.value);
+        });
+        
+        function exporterExcel() {
+            if (!allTransactionsForRapport.length) { showToast('Aucune donnée', 'warning'); return; }
+            const data = filteredTransactionsForRapport.map(t => ({
+                'Date': t.date ? new Date(t.date.toDate()).toLocaleDateString('fr-FR') : '-',
+                'N° Reçu': t.numeroRecu || t.id,
+                'Type': t.isDuplicata ? 'Duplicata' : 'Original',
+                'Étudiant': t.etudiantNom || '-',
+                'Promotion': t.promotionNom || '-',
+                'Année': t.anneeAcademiqueNom || '-',
+                'Fiches': t.fiches?.map(f => f.nom).join(', ') || '-',
+                'Montant FC': t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0),
+                'Montant USD': convertirFCversUSD(t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0)).toFixed(2)
+            }));
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Rapport');
+            XLSX.writeFile(wb, `rapport_${new Date().toISOString().split('T')[0]}.xlsx`);
+            showToast('Export Excel réussi', 'success');
+        }
+        
+        function exporterPDF() {
+            if (!allTransactionsForRapport.length) { showToast('Aucune donnée', 'warning'); return; }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'landscape' });
+            const tableData = filteredTransactionsForRapport.map(t => [
+                t.date ? new Date(t.date.toDate()).toLocaleDateString('fr-FR') : '-',
+                t.numeroRecu || t.id,
+                t.isDuplicata ? 'Duplicata' : 'Original',
+                t.etudiantNom || '-',
+                t.promotionNom || '-',
+                t.anneeAcademiqueNom || '-',
+                t.fiches?.map(f => f.nom).join(', ') || '-',
+                formaterMontant(t.isDuplicata ? (t.dernierFraisDuplicata || t.duplicataFrais || 0) : (t.montantTotal || 0))
+            ]);
+            doc.autoTable({
+                head: [['Date', 'N° Reçu', 'Type', 'Étudiant', 'Promotion', 'Année', 'Fiches', 'Montant']],
+                body: tableData,
+                theme: 'striped'
+            });
+            doc.save(`rapport_${new Date().toISOString().split('T')[0]}.pdf`);
+            showToast('Export PDF réussi', 'success');
+        }
+        
+        async function imprimerRapport() {
+            if (!allTransactionsForRapport.length) {
+                showToast('Aucune donnée à imprimer', 'warning');
+                return;
+            }
+            
+            let totalDuplicataMontant = 0;
+            let nombreDuplicatas = 0;
+            
+            allTransactionsForRapport.forEach(t => {
+                if (t.isDuplicata) {
+                    const montantDuplicata = t.dernierFraisDuplicata || t.duplicataFrais || 0;
+                    totalDuplicataMontant += montantDuplicata;
+                    nombreDuplicatas++;
+                }
+            });
+            
+            const duplicataStats = {
+                nombre: nombreDuplicatas,
+                montant: totalDuplicataMontant
+            };
+            
+            const stats = {
+                totalMontant: allTransactionsForRapport.reduce((sum, t) => {
+                    if (t.isDuplicata) return sum + (t.dernierFraisDuplicata || t.duplicataFrais || 0);
+                    return sum + (t.montantTotal || 0);
+                }, 0),
+                totalTransactions: allTransactionsForRapport.length,
+                totalEtudiants: new Set(allTransactionsForRapport.map(t => t.etudiantId)).size
+            };
+            
+            let filtres = [];
+            const anneeId = document.getElementById('rapportAnneeSelect').value;
+            const promotionId = document.getElementById('rapportPromotionSelect').value;
+            const dateDebut = document.getElementById('dateDebut').value;
+            const dateFin = document.getElementById('dateFin').value;
+            
+            if (anneeId) filtres.push('Année');
+            if (promotionId) filtres.push('Promotion');
+            if (dateDebut || dateFin) filtres.push('Dates');
+            
+            const filtresStr = filtres.length > 0 ? filtres.join(', ') : 'Aucun';
+            
+            const commands = generateRapportESCPOS(filteredTransactionsForRapport, stats, filtresStr, duplicataStats);
+            if (printerDevice) {
+                try {
+                    await printerDevice.transferOut(1, commands);
+                    await new Promise(r => setTimeout(r, 100));
+                    showToast('Rapport imprimé avec succès', 'success');
+                    return;
+                } catch (e) { console.warn('Erreur USB:', e); }
+            }
+            imprimerRapportFallback(filteredTransactionsForRapport, stats, filtresStr, duplicataStats);
+        }
+
+        function imprimerRapportFallback(transactions, stats, filtres, duplicataStats) {
+            const date = new Date().toLocaleDateString('fr-FR');
+            const heure = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            
+            // ⭐⭐⭐ CORRECTION : Les duplicatas ne sont plus comptés dans le détail par fiche ⭐⭐⭐
+            const fichesStats = {};
+            transactions.forEach(t => {
+                if (t.isDuplicata) {
+                    // Ajouter une ligne "Frais de duplicata" pour information
+                    const fraisDuplicata = t.dernierFraisDuplicata || t.duplicataFrais || 0;
+                    const nomFiche = 'Frais de duplicata (10 000 FC)';
+                    if (!fichesStats[nomFiche]) {
+                        fichesStats[nomFiche] = { count: 0, total: 0 };
+                    }
+                    fichesStats[nomFiche].count++;
+                    fichesStats[nomFiche].total += fraisDuplicata;
+                    return;
+                }
+                
+                if (t.fiches && Array.isArray(t.fiches)) {
+                    t.fiches.forEach(fiche => {
+                        const nomFiche = fiche.nom || 'Fiche inconnue';
+                        if (!fichesStats[nomFiche]) {
+                            fichesStats[nomFiche] = { count: 0, total: 0 };
+                        }
+                        fichesStats[nomFiche].count++;
+                        fichesStats[nomFiche].total += (fiche.prix || 0);
+                    });
+                }
+            });
+            
+            let ticket = '';
+            ticket += '\n';
+            ticket += '  UNIVERSITE DE LUBUMBASHI\n';
+            ticket += '    FACULTE DES SCIENCES AGRONOMIQUES\n';
+            ticket += '========================================\n';
+            ticket += '       RAPPORT DE TRANSACTIONS\n';
+            ticket += '========================================\n';
+            ticket += `DATE : ${date} ${heure}\n`;
+            if (filtres) ticket += `FILTRES : ${filtres}\n`;
+            ticket += '----------------------------------------\n';
+            ticket += `TOTAL COLLECTE : ${stats.totalMontant.toLocaleString()} FC\n`;
+            ticket += `NB TRANSACTIONS : ${stats.totalTransactions}\n`;
+            ticket += `NB ETUDIANTS : ${stats.totalEtudiants}\n`;
+            ticket += `DUPLICATAS SERVIS : ${duplicataStats.nombre}\n`;
+            ticket += `MONTANT DUPLICATAS : ${duplicataStats.montant.toLocaleString()} FC\n`;
+            ticket += '----------------------------------------\n';
+            
+            if (Object.keys(fichesStats).length > 0) {
+                ticket += '========================================\n';
+                ticket += '        DETAIL PAR FICHE\n';
+                ticket += '----------------------------------------\n';
+                ticket += 'FICHE          NB ETUD.    MONTANT\n';
+                ticket += '----------------------------------------\n';
+                for (const [nomFiche, statsFiche] of Object.entries(fichesStats)) {
+                    const nomTronque = nomFiche.length > 24 ? nomFiche.substring(0, 24) + '...' : nomFiche;
+                    ticket += `${nomTronque}  ${statsFiche.count} etud.   ${statsFiche.total.toLocaleString()} FC\n`;
+                }
+            }
+            
+            ticket += '========================================\n';
+            ticket += '          FIN DU RAPPORT\n';
+            ticket += '========================================\n';
+            ticket += '\n\n';
+            const printWindow = window.open('', '_blank', 'width=400,height=600');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Rapport de transactions</title>
+                    <style>body{font-family:'Courier New',monospace;font-size:12px;margin:0;padding:10px;width:80mm;}pre{font-family:'Courier New',monospace;font-size:11px;margin:0;white-space:pre-wrap;}@media print{body{margin:0;padding:0;}}</style>
+                </head>
+                <body><pre>${ticket}</pre>
+                <script>window.onload=function(){window.print();setTimeout(function(){window.close();},1000);};<\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+        
+        // Filtres dépenses
         document.getElementById('filtrerDepensesBtn')?.addEventListener('click', () => {
             const dateDebut = document.getElementById('depenseDateDebut').value;
             const dateFin = document.getElementById('depenseDateFin').value;
             chargerDepenses(dateDebut, dateFin);
         });
-
-        // ========== FONCTIONS DE RECHERCHE ÉTUDIANT ==========
-        const searchInput = document.getElementById('searchEtudiant');
-        if (searchInput) {
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.trim();
-                if (searchTerm.length < 2) { 
-                    document.getElementById('searchResults').style.display = 'none'; 
-                    return; 
-                }
-                const results = allStudents.filter(student => 
-                    student.nom && student.nom.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-                const resultsDiv = document.getElementById('searchResults');
-                if (results.length > 0) {
-                    resultsDiv.innerHTML = results.map(student => {
-                        const promoNom = getPromotionNom(student.promotion);
-                        return `<div class="search-result-item" onclick="selectionnerEtudiant('${student.id}', '${escapeHtml(student.nom)}', '${student.promotion || ''}')">
-                            <i class="bi bi-person-circle"></i> <strong>${escapeHtml(student.nom)}</strong>
-                            <br><small>${student.matricule || student.id} - ${escapeHtml(promoNom)}</small>
-                        </div>`;
-                    }).join('');
-                    resultsDiv.style.display = 'block';
-                } else {
-                    resultsDiv.innerHTML = '<div class="search-result-item">Aucun étudiant trouvé</div>';
-                    resultsDiv.style.display = 'block';
-                }
-            });
-        }
-
-        window.selectionnerEtudiant = async function(id, nom, promotionId) {
-            const anneeId = document.getElementById('anneeAcademiqueSelect').value;
-            if (!anneeId) {
-                showToast('Veuillez d\'abord sélectionner l\'année académique', 'warning');
+        
+        // Profile
+        document.getElementById('profileBtn').onclick = () => {
+            document.getElementById('profilNom').textContent = utilisateurActuel.nomComplet;
+            document.getElementById('profileModal').style.display = 'flex';
+        };
+        window.closeProfileModal = () => document.getElementById('profileModal').style.display = 'none';
+        document.getElementById('logoutBtn').onclick = () => {
+            localStorage.removeItem('utilisateurCompta');
+            window.location.href = 'login-comptabilite.html';
+        };
+        document.getElementById('changePasswordBtn').onclick = () => {
+            const newPwd = document.getElementById('newPassword').value;
+            const confirmPwd = document.getElementById('confirmNewPassword').value;
+            if (newPwd !== confirmPwd) {
+                showToast('Les mots de passe ne correspondent pas', 'warning');
                 return;
             }
-            currentStudent = { id: id, nomComplet: nom.toUpperCase(), promotion: promotionId || '' };
-            document.getElementById('searchResults').style.display = 'none';
-            document.getElementById('searchEtudiant').value = nom;
-            document.getElementById('studentInfo').style.display = 'block';
-            const promoNom = getPromotionNom(promotionId);
-            document.getElementById('studentDetails').innerHTML = `
-                <i class="bi bi-person-badge"></i> <strong>${escapeHtml(nom)}</strong>
-                <br><i class="bi bi-mortarboard-fill"></i> Promotion: <span class="promotion-badge">${escapeHtml(promoNom)}</span>
-                <br><i class="bi bi-file-text"></i> Matricule: ${escapeHtml(id)}
-            `;
-            studentPaidFiches = await afficherStatutPaiement(id, anneeId);
-            chargerFichesEtudiant(promotionId, anneeId);
-        }
-
-        function chargerFichesEtudiant(promotionId, anneeId) {
-            if (!promotionId) { 
-                document.getElementById('fichesContainer').style.display = 'none'; 
-                showToast('Cet étudiant n\'a pas de promotion assignée', 'warning'); 
-                return; 
-            }
-            currentFilteredFiches = allFiches.filter(fiche => {
-                if (studentPaidFiches.includes(fiche.id)) return false;
-                if (fiche.promotions && Array.isArray(fiche.promotions)) {
-                    return fiche.promotions.includes(promotionId);
-                } else if (fiche.promotion) {
-                    return fiche.promotion === promotionId;
-                }
-                return false;
-            });
-            document.getElementById('fichesContainer').style.display = 'block';
-            document.getElementById('fichesList').innerHTML = '<div class="info-banner"><i class="bi bi-search"></i> Commencez à taper pour rechercher une fiche</div>';
-            selectedFiches = [];
-            updatePanier();
-            updateTotal();
-            
-            const searchFicheInput = document.getElementById('searchFiche');
-            if (searchFicheInput) {
-                searchFicheInput.value = '';
-                searchFicheInput.oninput = function() {
-                    const term = this.value.toLowerCase().trim();
-                    const fichesListDiv = document.getElementById('fichesList');
-                    if (term.length === 0) {
-                        fichesListDiv.innerHTML = '<div class="info-banner"><i class="bi bi-search"></i> Commencez à taper pour rechercher une fiche</div>';
-                        return;
-                    }
-                    const filtered = currentFilteredFiches.filter(fiche => 
-                        fiche.nom.toLowerCase().includes(term) || 
-                        (fiche.description && fiche.description.toLowerCase().includes(term))
-                    );
-                    if (filtered.length > 0) {
-                        fichesListDiv.innerHTML = filtered.map(fiche => {
-                            const isSelected = selectedFiches.some(f => f.id === fiche.id);
-                            const montantFC = fiche.montant || 0;
-                            const dual = formaterMontantDual(montantFC);
-                            return `<div class="fiche-item ${isSelected ? 'selected' : ''}" onclick="toggleFiche('${fiche.id}', ${montantFC}, '${escapeHtml(fiche.nom)}')">
-                                <div>
-                                    <strong>${escapeHtml(fiche.nom)}</strong><br>
-                                    <small>${escapeHtml(fiche.description || '')}</small>
-                                </div>
-                                <div>
-                                    <span class="fiche-price">${dual.fc}</span>
-                                    <div style="font-size: 11px; color: ${isSelected ? '#ffb347' : '#999'};">${dual.usd}</div>
-                                </div>
-                            </div>`;
-                        }).join('');
-                    } else {
-                        fichesListDiv.innerHTML = '<div class="no-results">Aucune fiche trouvée</div>';
-                    }
-                };
-            }
-        }
-
-        window.toggleFiche = function(ficheId, prix, nom) {
-            const index = selectedFiches.findIndex(f => f.id === ficheId);
-            if (index === -1) {
-                selectedFiches.push({ id: ficheId, prix: parseFloat(prix), nom: nom });
-            } else {
-                selectedFiches.splice(index, 1);
-            }
-            const term = document.getElementById('searchFiche').value.toLowerCase().trim();
-            if (term) {
-                document.getElementById('searchFiche').dispatchEvent(new Event('input'));
-            }
-            updatePanier();
-            updateTotal();
-        }
-
-        function updatePanier() {
-            const panierSection = document.getElementById('panierSection');
-            const panierItems = document.getElementById('panierItems');
-            const panierCount = document.getElementById('panierCount');
-            if (selectedFiches.length === 0) {
-                panierSection.style.display = 'none';
+            if (newPwd.length < 4) {
+                showToast('Le mot de passe doit contenir au moins 4 caractères', 'warning');
                 return;
             }
-            panierSection.style.display = 'block';
-            panierCount.textContent = selectedFiches.length;
-            panierItems.innerHTML = selectedFiches.map(fiche => {
-                const dual = formaterMontantDual(fiche.prix);
-                return `
-                <div class="panier-item">
-                    <div class="panier-item-name"><i class="bi bi-file-text"></i><span>${escapeHtml(fiche.nom || 'Fiche')}</span></div>
-                    <div>
-                        <span style="font-weight: bold; margin-right: 15px;">${dual.fc}</span>
-                        <span style="font-size: 12px; color: #999; margin-right: 10px;">${dual.usd}</span>
-                        <button class="btn-remove-panier" onclick="retirerDuPanier('${fiche.id}')"><i class="bi bi-x-circle"></i></button>
-                    </div>
-                </div>`;
-            }).join('');
+            utilisateurActuel.motDePasse = newPwd;
+            localStorage.setItem('utilisateurCompta', JSON.stringify(utilisateurActuel));
+            showToast('Mot de passe modifié avec succès', 'success');
+            closeProfileModal();
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmNewPassword').value = '';
+        };
+        
+        // Exposer les fonctions globalement
+        window.openPage = openPage;
+        window.closePage = closePage;
+        window.genererRapport = genererRapport;
+        window.clearRapportSearch = clearRapportSearch;
+        window.exporterExcel = exporterExcel;
+        window.exporterPDF = exporterPDF;
+        window.imprimerRapport = imprimerRapport;
+        window.genererDuplicata = genererDuplicata;
+        window.reimprimer = reimprimer;
+        window.reimprimerDepense = reimprimerDepense;
+        window.validerDepense = validerDepense;
+        window.changerDevise = changerDevise;
+        
+        // Initialisation
+        mettreAJourStatsHeader();
+        calculerSolde();
+        chargerDepenses();
+        document.getElementById('currencySelect').value = deviseActuelle;
+        if (deviseActuelle === 'USD') {
+            document.getElementById('rateBadge').textContent = '1 FC = 0.00043 $';
         }
-
-        window.retirerDuPanier = function(ficheId) {
-            selectedFiches = selectedFiches.filter(f => f.id !== ficheId);
-            updatePanier();
-            updateTotal();
-            const term = document.getElementById('searchFiche').value.toLowerCase().trim();
-            if (term) {
-                document.getElementById('searchFiche').dispatchEvent(new Event('input'));
-            }
-        }
-
-        function updateTotal() { 
-            const total = selectedFiches.reduce((sum, f) => sum + (parseFloat(f.prix) || 0), 0);
-            const dual = formaterMontantDual(total);
-            
-            document.getElementById('totalAmount').innerHTML = dual.fc;
-            
-            const usdEl = document.getElementById('totalAmountUSD');
-            if (usdEl) {
-                if (deviseActuelle === 'FC') {
-                    usdEl.innerHTML = `(${dual.usd})`;
-                    usdEl.style.display = 'block';
-                } else {
-                    usdEl.innerHTML = '';
-                    usdEl.style.display = 'none';
-                }
-            }
-        }
-
-        function genererNumeroRecu() {
-            return Math.floor(Math.random() * 900) + 100 + '-' + Math.floor(Math.random() * 900) + 100;
-        }
-
-        // ========== VALIDATION PAIEMENT ==========
-        async function validerPaiement() {
-            if (!currentStudent) { showToast('Sélectionnez un étudiant', 'warning'); return; }
-            if (selectedFiches.length === 0) { showToast('Sélectionnez au moins une fiche', 'warning'); return; }
-            const anneeId = document.getElementById('anneeAcademiqueSelect').value;
-            if (!anneeId) { showToast('Sélectionnez l\'année académique', 'warning'); return; }
-            const total = selectedFiches.reduce((sum, f) => sum + f.prix, 0);
-            let numeroRecu = genererNumeroRecu();
-            const anneeNom = allAnnees.find(a => a.id === anneeId)?.annee || '-';
-            const promoNom = getPromotionNom(currentStudent.promotion).toUpperCase();
-            const fichesDetails = selectedFiches.map(f => ({ id: f.id, ...allFiches.find(fiche => fiche.id === f.id), prix: f.prix }));
-            const montantLettres = numberToWords(total);
-            const transaction = {
-                id: numeroRecu,
-                numeroRecu: numeroRecu,
-                etudiantId: currentStudent.id,
-                etudiantNom: currentStudent.nomComplet,
-                etudiantMatricule: currentStudent.id,
-                promotion: currentStudent.promotion,
-                promotionNom: promoNom,
-                anneeAcademiqueId: anneeId,
-                anneeAcademiqueNom: anneeNom,
-                fiches: fichesDetails,
-                montantTotal: total,
-                montantLettres: montantLettres,
-                date: firebase.firestore.FieldValue.serverTimestamp(),
-                comptable: utilisateurActuel.nomComplet.toUpperCase(),
-                comptableId: utilisateurActuel.id,
-                isDuplicata: false,
-                duplicataFrais: 0,
-                dernierFraisDuplicata: 0,
-                nombreDuplicatas: 0
-            };
-            const btn = document.getElementById('validerPaiementBtn');
-            btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Traitement...';
-            btn.disabled = true;
-            try {
-                await db.collection('transactions').doc(numeroRecu).set(transaction);
-                showToast('Paiement enregistré!', 'success');
-                imprimerAF250(transaction, fichesDetails, total, anneeNom, promoNom, montantLettres, numeroRecu, false, 0).catch(e => console.warn("Impression:", e));
-                mettreAJourStatsHeader();
-                const dual = formaterMontantDual(total);
-                document.getElementById('successDetails').innerHTML = `<strong>Étudiant:</strong> ${escapeHtml(currentStudent.nomComplet)}<br><strong>Montant:</strong> ${dual.hybride}<br><strong>N° Reçu:</strong> ${numeroRecu}`;
-                document.getElementById('paiementFormulaire').style.display = 'none';
-                document.getElementById('paiementSuccessMessage').style.display = 'block';
-            } catch (error) { 
-                showToast('Erreur: ' + error.message, 'error');
-                btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Valider le paiement'; 
-                btn.disabled = false; 
-            }
-        }
-
-        document.getElementById('validerPaiementBtn').onclick = validerPaiement;
-
-        // ========== INITIALISATION ==========
-        async function init() {
-            // Charger les données initiales
-            await chargerDonneesInitiales();
-            
-            // Configurer les écouteurs en temps réel
-            setupRealtimeListeners();
-            
-            // Initialiser la devise
-            document.getElementById('currencySelect').value = deviseActuelle;
-            if (deviseActuelle === 'USD') {
-                document.getElementById('rateBadge').textContent = '1 FC = 0.00043 $';
-            }
-            
-            console.log('✅ Application Comptabilité - Sécurisée avec Firebase Auth');
-            console.log('✅ Session utilisateur:', utilisateurActuel?.nomComplet);
-            console.log('✅ Devise active:', deviseActuelle);
-            console.log('✅ Duplicata: 10 000 FC par transaction, délai 72h');
-            console.log('✅ Chargement optimisé avec get() + onSnapshot');
-        }
-
-        // Démarrer l'application
-        init();
+        console.log('✅ Application prête avec conversion FC/USD (1$ = 23 000 FC)');
+        console.log('✅ Duplicata: 10 000 FC par transaction, délai 72h');
+        console.log('✅ CORRECTION : Les duplicatas n\'impactent plus le détail par fiche');
+        console.log('✅ Le total collecté = total détail par fiche');
     </script>
 </body>
 </html>
